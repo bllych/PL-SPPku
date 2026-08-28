@@ -1,7 +1,7 @@
 <!-- PROJECT SHIELDS -->
 <div align="center">
 
-<a href="https://laravel.com">
+  <a href="https://laravel.com">
     <img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel" />
   </a>
   <a href="https://www.php.net">
@@ -16,6 +16,10 @@
 <!-- PROJECT LOGO / TITLE -->
 <br />
 <div align="center">
+  <a href="https://github.com/bllych/PL-SPPku">
+    <img src="LOGO.png" alt="Logo SPPku" width="120" height="120">
+  </a>
+
   <h1 align="center">SPPku</h1>
 
   <p align="center">
@@ -26,8 +30,6 @@
 </div>
 
 ---
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -105,3 +107,68 @@ Sebelum memulai, pastikan perangkat Anda telah terpasang:
    ```bash
    git clone [https://github.com/username-anda/sppku.git](https://github.com/username-anda/sppku.git)
    cd sppku
+   ```
+
+2. **Install Dependencies**
+   Install pustaka PHP dan Node.js yang dibutuhkan:
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. **Konfigurasi Environment**
+   Salin file konfigurasi `.env.example` menjadi `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+   Buka file `.env` dan sesuaikan pengaturan database dengan Laragon Anda:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=sppku
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+4. **Generate Key & Migrasi Database**
+   Buat database kosong bernama `sppku` melalui HeidiSQL atau phpMyAdmin di Laragon, kemudian jalankan:
+   ```bash
+   php artisan key:generate
+   php artisan migrate --seed
+   ```
+
+5. **Jalankan Aplikasi**
+   Untuk menjalankan server lokal sekaligus aset *development*, jalankan perintah berikut:
+   ```bash
+   composer run dev
+   ```
+   Buka browser dan akses URL yang tampil pada terminal (biasanya `http://127.0.0.1:8000` atau `http://localhost:8000`).
+
+---
+
+## Panduan Penggunaan
+
+1. **Akses Administrator (Staf Keuangan/Guru):**
+   - Login menggunakan akun Admin.
+   - Kelola data tarif SPP, kelola akun siswa, dan lihat riwayat pemasukan harian/bulanan.
+   - Gunakan fitur pengingat untuk menandai siswa yang memiliki tunggakan.
+
+2. **Akses Siswa / Orang Tua:**
+   - Login menggunakan NISN / Akun Siswa.
+   - Periksa rincian tagihan yang belum dibayar dan riwayat transaksi yang sudah lunas.
+
+---
+
+## Kontak & Pengembang
+
+**Disusun oleh:**
+* Alice Holly Kristy
+* Billy
+* Britania Fisichella
+* Gracia Queen Anastacia
+
+**Detail Pembelajaran:**
+* **Kelas / Jurusan:** XII TKJ 1
+* **Mata Pelajaran:** Pemrograman Lanjutan (PL)
+* **Project Link:** [https://github.com/bllych/PL-SPPku](https://github.com/bllych/PL-SPPku)
