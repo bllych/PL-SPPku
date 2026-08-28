@@ -124,7 +124,7 @@ Sebelum memulai, pastikan perangkat Anda telah terpasang:
    ```
 
 4. **Konfigurasi Environment (`.env`)**
-   Buka folder project di Visual Studio Code menggunakan perintah `code .` di terminal. Salin file `.env.example` menjadi `.env`, lalu atur konfigurasi database MySQL Laragon seperti berikut:
+   Buka folder project di Visual Studio Code menggunakan perintah `code .` di terminal. Buka file `.env` kemudian, atur konfigurasi database MySQL Laragon seperti berikut:
    ```env
    APP_URL=[http://127.0.0.1:8000](http://127.0.0.1:8000)
    DB_CONNECTION=mysql
