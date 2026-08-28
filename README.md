@@ -1,9 +1,15 @@
 <!-- PROJECT SHIELDS -->
 <div align="center">
 
-[![Laravel][Laravel.com]][Laravel-url]
-[![PHP][PHP.net]][PHP-url]
-[![MySQL][MySQL.com]][MySQL-url]
+<a href="https://laravel.com">
+    <img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel" />
+  </a>
+  <a href="https://www.php.net">
+    <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP" />
+  </a>
+  <a href="https://www.mysql.com">
+    <img src="https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
+  </a>
 
 </div>
 
@@ -20,6 +26,8 @@
 </div>
 
 ---
+
+
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -58,9 +66,9 @@ Seringkali, pencatatan dan pengecekan status SPP secara manual menyita banyak wa
 
 Teknologi dan tools utama yang digunakan dalam pengembangan project ini:
 
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![PHP][PHP.net]][PHP-url]
-* [![MySQL][MySQL.com]][MySQL-url]
+* [![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+* [![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net)
+* [![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com)
 * **Laragon** (Local Web Server Environment)
 
 ---
