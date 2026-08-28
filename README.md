@@ -116,6 +116,44 @@ Sebelum memulai, pastikan perangkat Anda telah terpasang:
    cd C:\laragon\www
    git clone [https://github.com/bllych/PL-SPPku.git](https://github.com/bllych/PL-SPPku.git) sppku
    cd sppku
+   
+3. **Install Dependencies Project**
+   Pastikan koneksi internet aktif, lalu jalankan perintah Composer untuk memasang pustaka/dependensi yang dibutuhkan project:
+   ```bash
+   composer install
+   ```
+
+4. **Konfigurasi Environment (`.env`)**
+   Buka folder project di Visual Studio Code menggunakan perintah `code .` di terminal. Salin file `.env.example` menjadi `.env`, lalu atur konfigurasi database MySQL Laragon seperti berikut:
+   ```env
+   APP_URL=[http://127.0.0.1:8000](http://127.0.0.1:8000)
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=sppku
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+5. **Generate App Key & Migrasi Database**
+   Jalankan perintah pembuatan kunci aplikasi dan migrasi database (beserta data awal/seeder):
+   ```bash
+   php artisan key:generate
+   php artisan migrate --seed
+   ```
+   *Jika database `sppku` belum dibuat di MySQL, tekan `yes` saat terminal memberikan konfirmasi agar Laravel membuatkan database-nya secara otomatis.*
+
+6. **Jalankan Local Development Server**
+   Eksekusi perintah berikut di terminal untuk menjalankan server aplikasi:
+   ```bash
+   composer run dev
+   ```
+   *(Atau gunakan perintah `php artisan serve`)*
+
+7. **Akses Aplikasi**
+   Buka browser Anda dan akses tautan `http://127.0.0.1:8000` atau `http://localhost:8000`. Tampilan utama SPPku siap digunakan!
+
+---
 
 ## Panduan Penggunaan
 
