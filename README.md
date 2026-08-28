@@ -4,6 +4,9 @@
   <a href="https://laravel.com">
     <img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel" />
   </a>
+  <a href="https://laravel.com/docs/blade">
+    <img src="https://img.shields.io/badge/Laravel_Blade-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel Blade" />
+  </a>
   <a href="https://www.php.net">
     <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP" />
   </a>
@@ -16,6 +19,7 @@
 <!-- PROJECT LOGO / TITLE -->
 <br />
 <div align="center">
+  
 
   <h1 align="center">SPPku</h1>
 
@@ -70,6 +74,7 @@ Seringkali, pencatatan dan pengecekan status SPP secara manual menyita banyak wa
 Teknologi dan tools utama yang digunakan dalam pengembangan project ini:
 
 * [![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+* **Laravel Blade** (Templating Engine)
 * [![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net)
 * [![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com)
 * **Laragon** (Local Web Server Environment)
@@ -91,62 +96,26 @@ Teknologi dan tools utama yang digunakan dalam pengembangan project ini:
 
 ## Panduan Instalasi
 
-Ikuti langkah-langkah di bawah ini untuk menginstal dan menjalankan SPPku di lingkungan lokal komputer Anda.
+Ikuti langkah-langkah di bawah ini untuk mengkloning dan menjalankan repository **SPPku** di lingkungan lokal komputer Anda menggunakan Laragon.
 
 ### Prasyarat
 
 Sebelum memulai, pastikan perangkat Anda telah terpasang:
-* [Laragon](https://laragon.org/) (dengan PHP >= 8.x dan MySQL aktif)
-* [Composer](https://getcomposer.org/)
-* [Node.js & NPM](https://nodejs.org/)
+* [Laragon](https://laragon.org/) (dengan layanan Apache/Nginx & MySQL aktif)
 * [Git](https://git-scm.com/)
+* [Composer](https://getcomposer.org/) (dapat diakses langsung via terminal Laragon)
 
 ### Langkah-langkah
 
-1. **Clone Repository**
-   Buka terminal/command prompt pada folder web server Anda (misal `C:\laragon\www`), lalu jalankan:
+1. **Jalankan Service Laragon**
+   Buka aplikasi Laragon pada desktop Anda, lalu klik tombol **Start All** untuk mengaktifkan Web Server dan MySQL.
+
+2. **Clone Repository Project**
+   Buka **Terminal** Laragon, lalu pindah ke direktori `www` dan lakukan clone repository SPPku:
    ```bash
-   git clone [https://github.com/bllych/PL-SPPku.git](https://github.com/bllych/PL-SPPku.git)
+   cd C:\laragon\www
+   git clone [https://github.com/bllych/PL-SPPku.git](https://github.com/bllych/PL-SPPku.git) sppku
    cd sppku
-   ```
-
-2. **Install Dependencies**
-   Install pustaka PHP dan Node.js yang dibutuhkan:
-   ```bash
-   composer install
-   npm install
-   ```
-
-3. **Konfigurasi Environment**
-   Salin file konfigurasi `.env.example` menjadi `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-   Buka file `.env` dan sesuaikan pengaturan database dengan Laragon Anda:
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=sppku
-   DB_USERNAME=root
-   DB_PASSWORD=
-   ```
-
-4. **Generate Key & Migrasi Database**
-   Buat database kosong bernama `sppku` melalui HeidiSQL atau phpMyAdmin di Laragon, kemudian jalankan:
-   ```bash
-   php artisan key:generate
-   php artisan migrate --seed
-   ```
-
-5. **Jalankan Aplikasi**
-   Untuk menjalankan server lokal sekaligus aset *development*, jalankan perintah berikut:
-   ```bash
-   composer run dev
-   ```
-   Buka browser dan akses URL yang tampil pada terminal (biasanya `http://127.0.0.1:8000` atau `http://localhost:8000`).
-
----
 
 ## Panduan Penggunaan
 
