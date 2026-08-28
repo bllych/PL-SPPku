@@ -16,11 +16,12 @@
 <!-- PROJECT LOGO / TITLE -->
 <br />
 <div align="center">
-  <a href="https://github.com/bllych/PL-SPPku">
-    <img src="LOGO.png" alt="Logo SPPku" width="120" height="120">
-  </a>
 
   <h1 align="center">SPPku</h1>
+
+  <a href="https://github.com/bllych/PL-SPPku">
+    <img src="LOGO.png" alt="Logo SPPku" width="500" height="500">
+  </a>
 
   <p align="center">
     Sistem Informasi & Management Pembayaran SPP Sekolah Berbasis Web
