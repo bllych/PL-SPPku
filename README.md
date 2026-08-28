@@ -106,7 +106,7 @@ Sebelum memulai, pastikan perangkat Anda telah terpasang:
 1. **Clone Repository**
    Buka terminal/command prompt pada folder web server Anda (misal `C:\laragon\www`), lalu jalankan:
    ```bash
-   git clone [https://github.com/username-anda/sppku.git](https://github.com/username-anda/sppku.git)
+   git clone [https://github.com/bllych/PL-SPPku.git](https://github.com/bllych/PL-SPPku.git)
    cd sppku
    ```
 
