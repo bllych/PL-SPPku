@@ -170,6 +170,12 @@ Sebelum memulai, pastikan perangkat Anda telah terpasang:
 
 ## Kontak & Pengembang
 
+### Top contributors:
+
+<a href="https://github.com/bllych/PL-SPPku/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=bllych/PL-SPPku" alt="contrib.rocks image" />
+</a>
+
 **Disusun oleh:**
 * Alice Holly Kristy
 * Billy
