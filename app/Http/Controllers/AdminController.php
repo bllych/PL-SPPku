@@ -262,6 +262,19 @@ class AdminController extends Controller
 
     public function payments()
     {
-        return view('Admin.payments');
+        $title = "SPPku - Halaman Laporan Pembayaran Admin";
+        return view('Admin.payments', compact('title'));
+    }
+
+    public function notification()
+    {
+        $title = "SPPku - Halaman Notifikasi Admin";
+        return view('Admin.notification', compact('title'));
+    }
+
+    public function show()
+    {
+        $title = "SPPku - Halaman Profile Admin";
+        return view('Admin.show', compact('title'));
     }
 }

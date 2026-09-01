@@ -22,6 +22,16 @@ Route::get('/students/{id}/notifications', [App\Http\Controllers\StudentControll
 
 // Halaman Utama Admin
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index']);
+// Halaman Profile Admin
+Route::get('/admin/profile', [App\Http\Controllers\AdminController::class, 'show']);
 // Halaman Laporan Pembayaran Admin
 Route::get('/admin/payments', [App\Http\Controllers\AdminController::class, 'payments']);
-// Halaman Laporan Siswa Admin
+// Halaman Notifikasi Admin
+Route::get('/admin/notification', [App\Http\Controllers\AdminController::class, 'notification']);
+
+
+
+// Manajemen Auth
+
+// Halaman Login
+Route::get('/login', [App\Http\Controllers\AuthController::class, 'login']);

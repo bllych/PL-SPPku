@@ -8,7 +8,9 @@ class StudentController extends Controller
 {
     public function index()
     {
-        return view('Students.index');
+        $title = "SPPku - Halaman Siswa";
+
+        return view('Students.index', compact('title'));
     }
 
     public function show($id)
@@ -93,11 +95,14 @@ class StudentController extends Controller
     }
     public function payments($id)
     {
-        return view('Students.payments', ['id' => $id]);
+        $title = "SPPku - Halaman Riwayat Pembayaran Siswa";
+
+        return view('Students.payments', compact('title', 'id'));
     }
 
     public function notifications($id)
     {
-        return view('Students.notification', ['id' => $id]);
+        $title = "SPPku - Halaman Notifikasi Siswa";
+        return view('Students.notification', compact('title', 'id'));
     }
 }
