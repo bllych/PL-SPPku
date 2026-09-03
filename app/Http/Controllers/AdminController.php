@@ -277,4 +277,10 @@ class AdminController extends Controller
         $title = "SPPku - Halaman Profile Admin";
         return view('Admin.show', compact('title'));
     }
+
+    public function dashboard()
+    {
+        $title = "SPPku - Halaman Dashboard Admin";
+        return view('Admin.dashboard', compact('title'));
+    }
 }

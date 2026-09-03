@@ -28,6 +28,8 @@ Route::get('/admin/profile', [App\Http\Controllers\AdminController::class, 'show
 Route::get('/admin/payments', [App\Http\Controllers\AdminController::class, 'payments']);
 // Halaman Notifikasi Admin
 Route::get('/admin/notification', [App\Http\Controllers\AdminController::class, 'notification']);
+// Halaman Dashboard Admin
+Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard']);
 
 
 
