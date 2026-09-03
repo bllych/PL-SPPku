@@ -1,5 +1,5 @@
-<header class="bg-[#45C0F4] shadow-lg relative z-10">
-    <div class="mx-auto flex items-center justify-between px-8 py-2">
+<header class="bg-[#45C0F4] shadow-md relative z-10">
+    <div class="mx-auto flex items-center justify-between px-9 py-4">
         <a href="" class="flex items-center gap-3 w-59">
             <img src="{{ asset('images/logo/logo Sekolah Kristen Immanuel Payment.png') }}" alt="Logo"
                 class="w-auto h-10">
