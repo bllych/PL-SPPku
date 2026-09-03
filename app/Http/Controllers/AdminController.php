@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function dashboard()
     {
         $title = "SPPku - Halaman Admin";
                 $students = [
@@ -14,7 +14,7 @@ class AdminController extends Controller
                 'id' => 1,
                 'name' => 'Alfredy Rudi',
                 'class' => '12 TKJ 1',
-                'tagihan' => 'Rp. 840.000,00',
+                'tuition' => 'Rp. 840.000,00',
                 'status' => 'Belum Lunas'
 
             ],
@@ -257,30 +257,30 @@ class AdminController extends Controller
                 "status" => "Belum Lunas"
             ]
         ];
-        return view('Admin.index', compact('title', 'students'));
+        return view('admin.dashboard', compact('title', 'students'));
     }
 
     public function payments()
     {
         $title = "SPPku - Halaman Laporan Pembayaran Admin";
-        return view('Admin.payments', compact('title'));
+        return view('admin.payments', compact('title'));
     }
 
     public function notification()
     {
         $title = "SPPku - Halaman Notifikasi Admin";
-        return view('Admin.notification', compact('title'));
+        return view('admin.notification', compact('title'));
     }
 
     public function show()
     {
         $title = "SPPku - Halaman Profile Admin";
-        return view('Admin.show', compact('title'));
+        return view('admin.show', compact('title'));
     }
 
-    public function dashboard()
+    public function reports()
     {
-        $title = "SPPku - Halaman Dashboard Admin";
-        return view('Admin.dashboard', compact('title'));
+        $title = "SPPku - Halaman Laporan Keuangan Admin";
+        return view('admin.reports', compact('title'));
     }
 }

@@ -10,7 +10,7 @@ class StudentController extends Controller
     {
         $title = "SPPku - Halaman Siswa";
 
-        return view('Students.index', compact('title'));
+        return view('students.index', compact('title'));
     }
 
     public function show($id)
@@ -91,18 +91,18 @@ class StudentController extends Controller
         ]
     ];
 
-        return view('Students.show', compact('title', 'id', 'student'));
+        return view('students.show', compact('title', 'id', 'student'));
     }
     public function payments($id)
     {
         $title = "SPPku - Halaman Riwayat Pembayaran Siswa";
 
-        return view('Students.payments', compact('title', 'id'));
+        return view('students.payments', compact('title', 'id'));
     }
 
     public function notifications($id)
     {
         $title = "SPPku - Halaman Notifikasi Siswa";
-        return view('Students.notification', compact('title', 'id'));
+        return view('students.notification', compact('title', 'id'));
     }
 }
