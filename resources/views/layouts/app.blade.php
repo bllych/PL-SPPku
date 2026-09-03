@@ -11,22 +11,22 @@
 </head>
 
 <body class="flex min-h-screen flex-col bg-[#F7F6F2] text-slate-700">
-
-    {{-- Header Start--}}
+    {{-- Header Start --}}
     @include('layouts.partials.header')
     {{-- Header End --}}
 
-    {{-- Sidebar Start --}}
-    @include('layouts.partials.sidebar')
-    {{-- Sidebar End --}}
+    {{-- Main Container (Sidebar + Content Berdampingan) --}}
+    <div class="mx-auto flex w-full max-w-7xl flex-1">
+        {{-- Sidebar Start --}}
+        @include('layouts.partials.sidebar')
+        {{-- Sidebar End --}}
 
-    {{-- Content Start --}}
-    <main class="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
-        @yield('content')
-    </main>
-    {{-- Content End --}}
-
-
+        {{-- Content Start --}}
+        <main class="flex-1 px-6 py-10">
+            @yield('content')
+        </main>
+        {{-- Content End --}}
+    </div>
 
     {{-- Footer Start --}}
     @include('layouts.partials.footer')
