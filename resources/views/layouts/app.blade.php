@@ -16,13 +16,13 @@
     {{-- Header End --}}
 
     {{-- Main Container (Sidebar + Content Berdampingan) --}}
-    <div class="mx-auto flex w-full max-w-7xl flex-1">
+    <div class="mx-auto flex w-full flex-1">
         {{-- Sidebar Start --}}
         @include('layouts.partials.sidebar')
         {{-- Sidebar End --}}
 
         {{-- Content Start --}}
-        <main class="flex-1 px-6 py-10">
+        <main class="flex-1 px-6 py-10 bg-[#F3F5FF]">
             @yield('content')
         </main>
         {{-- Content End --}}
