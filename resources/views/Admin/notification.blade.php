@@ -1,1 +1,7 @@
-Halaman Notifikasi Admin
+@extends('layouts.app')
+
+@section ('title', $title)
+
+@section ('content')
+
+<p>Halaman Notifikasi Admin</p>

@@ -1,1 +1,7 @@
-<P> Halaman laporan pembayaran admin </P>
+@extends('layouts.app')
+
+@section ('title', $title)
+
+@section ('content')
+
+<p>Halaman Pembayaran Admin</p>

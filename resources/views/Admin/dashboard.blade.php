@@ -4,4 +4,4 @@
 
 @section ('content')
 
-<p>Halaman Laporan Keuangan Admin</p>
+<p>Halaman Dashboard Admin</p>

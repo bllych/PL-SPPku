@@ -1,1 +1,7 @@
-<p> Halaman profile siswa</p>
+@extends('layouts.app')
+
+@section ('title', $title)
+
+@section ('content')
+
+<p>Halaman Profile Siswa</p>

@@ -21,15 +21,15 @@ Route::get('/students/{id}/notifications', [App\Http\Controllers\StudentControll
 // Manajemen Admin
 
 // Halaman Utama Admin
-Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index']);
+Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard']);
 // Halaman Profile Admin
 Route::get('/admin/profile', [App\Http\Controllers\AdminController::class, 'show']);
 // Halaman Laporan Pembayaran Admin
 Route::get('/admin/payments', [App\Http\Controllers\AdminController::class, 'payments']);
 // Halaman Notifikasi Admin
 Route::get('/admin/notification', [App\Http\Controllers\AdminController::class, 'notification']);
-// Halaman Dashboard Admin
-Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard']);
+// Halaman Laporan Keuangan Admin
+Route::get('/admin/reports', [App\Http\Controllers\AdminController::class, 'reports']);
 
 
 

@@ -1,6 +1,7 @@
-
+@extends('layouts.app')
 
 @section ('title', $title)
 
 @section ('content')
-<p> Halaman utama admin </p>
+
+<p>Halaman Laporan Keuangan Admin</p>

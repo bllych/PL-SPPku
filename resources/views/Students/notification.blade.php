@@ -1,1 +1,7 @@
-<p> Halaman notifikasi siswa </p>
+@extends('layouts.app')
+
+@section ('title', $title)
+
+@section ('content')
+
+<p>Halaman Notifikasi Siswa</p>
