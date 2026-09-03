@@ -15,14 +15,13 @@
     @include('layouts.partials.header')
     {{-- Header End --}}
 
-    {{-- Main Container (Sidebar + Content Berdampingan) --}}
     <div class="mx-auto flex w-full flex-1">
         {{-- Sidebar Start --}}
         @include('layouts.partials.sidebar')
         {{-- Sidebar End --}}
 
         {{-- Content Start --}}
-        <main class="flex-1 px-6 py-10 bg-[#F3F5FF]">
+        <main class="flex-1 px-10 py-5 bg-[#F3F5FF]">
             @yield('content')
         </main>
         {{-- Content End --}}
