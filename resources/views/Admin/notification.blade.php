@@ -5,3 +5,5 @@
 @section ('content')
 
 <p>Halaman Notifikasi Admin</p>
+
+@endsection

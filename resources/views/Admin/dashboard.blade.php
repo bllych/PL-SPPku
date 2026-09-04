@@ -4,3 +4,6 @@
 
 @section ('content')
 
+<p>Halaman Dashboard Admin</p>
+
+@endsection

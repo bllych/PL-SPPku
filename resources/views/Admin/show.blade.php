@@ -5,3 +5,5 @@
 @section ('content')
 
 <p>Halaman profile Admin</p>
+
+@endsection
