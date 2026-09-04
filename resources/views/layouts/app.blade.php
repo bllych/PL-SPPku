@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
 
+<style>
+    *{
+        border: 1px solid red;
+    }
+</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +26,7 @@
         {{-- Sidebar End --}}
 
         {{-- Content Start --}}
-        <main class="flex-1 px-10 py-5 bg-[#F3F5FF]">
+        <main class="flex-1 px-10 py-5 bg-[#F3F5FF] overflow-hidden min-w-0">
             @yield('content')
         </main>
         {{-- Content End --}}

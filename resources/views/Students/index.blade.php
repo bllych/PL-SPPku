@@ -5,3 +5,5 @@
 @section ('content')
 
 <p> Halaman utama siswa</p>
+
+@endsection

@@ -5,3 +5,5 @@
 @section ('content')
 
 <p>Halaman Laporan Keuangan Admin</p>
+
+@endsection

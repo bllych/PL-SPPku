@@ -5,3 +5,5 @@
 @section ('content')
 
 <p>Halaman Pembayaran Siswa</p>
+
+@endsection
