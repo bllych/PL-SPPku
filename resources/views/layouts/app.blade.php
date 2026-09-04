@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
 
-<style>
-    *{
-        border: 1px solid red;
-    }
-</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
