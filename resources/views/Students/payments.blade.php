@@ -164,7 +164,7 @@
                         </svg>
 
                         <span class="text-[14px] text-gray-400">
-                            10 April 2026
+                            s/d 15 April 2026
                         </span>
                     </div>
 
@@ -202,9 +202,7 @@
                 <div class="flex w-[140px] flex-col items-center gap-2">
 
                     <!-- STATUS -->
-                    <span class="flex h-[32px] w-[140px] items-center justify-center rounded-lg bg-[#bdfcae] text-[16px] font-semibold text-[#3a9b2c]">
-                        Lunas
-                    </span>
+                    <x-status-badge status="Belum Lunas" />
 
                     <!-- BUTTON -->
                     <button
@@ -274,7 +272,7 @@
                         </svg>
 
                         <span class="text-[14px] text-gray-400">
-                            10 Maret 2026
+                            s/d 15 Maret 2026
                         </span>
                     </div>
 
@@ -305,9 +303,7 @@
                 <!-- STATUS + BUTTON -->
                 <div class="flex w-[140px] flex-col items-center gap-2">
 
-                    <span class="flex h-[32px] w-[140px] items-center justify-center rounded-lg bg-[#bdfcae] text-[16px] font-semibold text-[#3a9b2c]">
-                        Lunas
-                    </span>
+                    <x-status-badge status="Terlambat" />
 
                     <button
                         type="button"
@@ -487,9 +483,7 @@
 
                 <div class="flex w-[140px] flex-col items-center gap-2">
 
-                    <span class="flex h-[32px] w-[140px] items-center justify-center rounded-lg bg-[#ffe8a8] text-[16px] font-semibold text-[#e89b00]">
-                        Menunggu
-                    </span>
+                    <x-status-badge status="Lunas" />
 
                     <button
                         type="button"
