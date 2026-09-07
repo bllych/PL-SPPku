@@ -24,7 +24,7 @@
   <h1 align="center">SPPku</h1>
 
   <a href="https://github.com/bllych/PL-SPPku">
-    <img src="LOGO.png" alt="Logo SPPku" width="500" height="500">
+    <img src="images/logo/logo SPPku.png" alt="Logo SPPku" width="500" height="500">
   </a>
 
   <p align="center">
