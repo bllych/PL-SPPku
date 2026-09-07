@@ -21,7 +21,7 @@
         {{-- Sidebar End --}}
 
         {{-- Content Start --}}
-        <main class="flex-1 px-10 py-5 bg-[#F3F5FF] overflow-hidden min-w-0">
+        <main class="flex-1 px-10 py-5 bg-[#F3F5FF] overflow-hidden">
             @yield('content')
         </main>
         {{-- Content End --}}
