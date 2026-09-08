@@ -23,13 +23,9 @@
 
   <h1 align="center">SPPku</h1>
 
-<a href="https://github.com/bllych/PL-SPPku">
-  <img src="https://raw.githubusercontent.com/bllych/PL-SPPku/main/images/logo/logo%20SPPku.png"
-      alt="Logo SPPku"
-      width="500"
-      height="500">
-</a>
-
+  <a href="https://github.com/bllych/PL-SPPku">
+    <img src="LOGO.png" alt="Logo SPPku" width="500">
+  </a>
 
   <p align="center">
     Sistem Informasi & Management Pembayaran SPP Sekolah Berbasis Web
