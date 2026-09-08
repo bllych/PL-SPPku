@@ -30,6 +30,7 @@
       height="500">
 </a>
 
+
   <p align="center">
     Sistem Informasi & Management Pembayaran SPP Sekolah Berbasis Web
     <br />
