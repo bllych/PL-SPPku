@@ -10,14 +10,14 @@ class StudentController extends Controller
     {
         $title = "SPPku - Halaman Siswa";
 
-        return view('students.index', compact('title'));
+        return view('student.index', compact('title'));
     }
 
     public function show($id)
     {
         $title = "SPPku - Halaman Profile Siswa";
 
-        $student = [[
+        $students = [[
             'profile' => [
                 'id'          => $id,
                 'name'        => 'Alfredy Rudi',
@@ -91,18 +91,18 @@ class StudentController extends Controller
         ]
     ];
 
-        return view('students.show', compact('title', 'id', 'student'));
+        return view('student.show', compact('title', 'id', 'student'));
     }
     public function payments($id)
     {
         $title = "SPPku - Halaman Riwayat Pembayaran Siswa";
 
-        return view('students.payments', compact('title', 'id'));
+        return view('student.payment-view', compact('title', 'id'));
     }
 
     public function notifications($id)
     {
         $title = "SPPku - Halaman Notifikasi Siswa";
-        return view('students.notification', compact('title', 'id'));
+        return view('student.notification-view', compact('title', 'id'));
     }
 }
