@@ -9,7 +9,7 @@ class AdminController extends Controller
     public function dashboard()
     {
         $title = "SPPku - Halaman Admin";
-                $students = [
+        $students = [
             [
                 'id' => 1,
                 'name' => 'Alfredy Rudi',
@@ -263,13 +263,13 @@ class AdminController extends Controller
     public function payments()
     {
         $title = "SPPku - Halaman Laporan Pembayaran Admin";
-        return view('admin.payments', compact('title'));
+        return view('admin.payment-view', compact('title'));
     }
 
     public function notification()
     {
         $title = "SPPku - Halaman Notifikasi Admin";
-        return view('admin.notification', compact('title'));
+        return view('admin.notification-view', compact('title'));
     }
 
     public function show()
@@ -281,6 +281,6 @@ class AdminController extends Controller
     public function reports()
     {
         $title = "SPPku - Halaman Laporan Keuangan Admin";
-        return view('admin.reports', compact('title'));
+        return view('admin.report-view', compact('title'));
     }
 }
