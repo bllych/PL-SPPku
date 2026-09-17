@@ -19,7 +19,7 @@ class StudentController extends Controller
 
         $students = [[
             'profile' => [
-                'id'          => $id,
+                'id'          => 1,
                 'name'        => 'Alfredy Rudi',
                 'nisn'        => '0091237740',
                 'nis'         => '7740',
@@ -43,7 +43,7 @@ class StudentController extends Controller
         ],
         [
             'profile' => [
-                'id'          => $id,
+                'id'          => 2,
                 'name'        => 'Alice Holly Kristy',
                 'nisn'        => '0091237741',
                 'nis'         => '7741',
@@ -67,7 +67,7 @@ class StudentController extends Controller
         ],
         [
             'profile' => [
-                'id'          => $id,
+                'id'          => 3,
                 'name'        => 'Amos Mikhael',
                 'nisn'        => '0091237742',
                 'nis'         => '7742',
@@ -90,6 +90,8 @@ class StudentController extends Controller
             ],
         ]
     ];
+
+        $student = collect($students)->firstWhere('profile.id', $id);
 
         return view('student.show', compact('title', 'id', 'student'));
     }
