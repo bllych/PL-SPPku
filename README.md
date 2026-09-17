@@ -114,7 +114,7 @@ Sebelum memulai, pastikan perangkat Anda telah terpasang:
    Buka **Terminal** Laragon, lalu pindah ke direktori `www` dan lakukan clone repository SPPku:
    ```bash
    cd C:\laragon\www
-   git clone [https://github.com/bllych/PL-SPPku.git](https://github.com/bllych/PL-SPPku.git) sppku
+   git clone https://github.com/bllych/PL-SPPku.git sppku
    cd sppku
    
 3. **Install Dependencies Project**
