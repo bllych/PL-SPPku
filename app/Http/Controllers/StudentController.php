@@ -17,6 +17,7 @@ class StudentController extends Controller
     {
         $title = "SPPku - Halaman Profile Siswa";
 
+        return view('student.show', compact('title', 'id'));
         $students = [[
             'profile' => [
                 'id'          => 1,
