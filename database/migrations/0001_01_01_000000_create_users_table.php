@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            //tambahkan role pembeda antara admin dan user
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

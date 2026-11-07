@@ -10,10 +10,10 @@ class AdminController extends Controller
     public function dashboard()
     {
         // Mass Assign
-        User::create([
-            'name' => 'Bily',
-            'email' => 'bily@gmail.com'
-        ]);
+        // User::create([
+        //     'name' => 'Bily',
+        //     'email' => 'bily@gmail.com'
+        // ]);
 
         // Tanpa Mass Assign
         $user = new User();
