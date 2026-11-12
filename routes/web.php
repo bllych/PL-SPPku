@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -9,31 +12,33 @@ Route::get('/', function () {
 // Manajemen Siswa
 
 // Halaman Utama Siswa
-Route::get('/students', [App\Http\Controllers\StudentController::class, 'index']);
+Route::get('/students', [StudentController::class, 'index'])
+    ->name('students.index');
+Route::post('/students', [StudentController::class, 'store'])
+    ->middleware('auth')
+    ->name('students.store');
 // Halaman Profile Siswa
-Route::get('/students/{id}', [App\Http\Controllers\StudentController::class, 'show']);
+Route::get('/students/{id}', [StudentController::class, 'show']);
 // Halaman Riwayat Pembayaran Siswa
-Route::get('/students/{id}/payments', [App\Http\Controllers\StudentController::class, 'payments']);
+Route::get('/students/{id}/payments', [StudentController::class, 'payments']);
 // Halaman notifikasi Siswa
-Route::get('/students/{id}/notifications', [App\Http\Controllers\StudentController::class, 'notifications']);
-
+Route::get('/students/{id}/notifications', [StudentController::class, 'notifications']);
 
 // Manajemen Admin
 
 // Halaman Utama Admin
-Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard']);
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
 // Halaman Profile Admin
-Route::get('/admin/profile', [App\Http\Controllers\AdminController::class, 'show']);
+Route::get('/admin/profile', [AdminController::class, 'show']);
 // Halaman Laporan Pembayaran Admin
-Route::get('/admin/payments', [App\Http\Controllers\AdminController::class, 'payments']);
+Route::get('/admin/payments', [AdminController::class, 'payments']);
 // Halaman Notifikasi Admin
-Route::get('/admin/notification', [App\Http\Controllers\AdminController::class, 'notification']);
+Route::get('/admin/notification', [AdminController::class, 'notification']);
 // Halaman Laporan Keuangan Admin
-Route::get('/admin/reports', [App\Http\Controllers\AdminController::class, 'reports']);
-
-
+Route::get('/admin/reports', [AdminController::class, 'reports']);
 
 // Manajemen Auth
 
 // Halaman Login
-Route::get('/login', [App\Http\Controllers\AuthController::class, 'login']);
+Route::get('/login', [AuthController::class, 'login'])
+    ->name('login');
