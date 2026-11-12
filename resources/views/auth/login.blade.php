@@ -37,17 +37,25 @@
             </div>
 
             <!-- Form -->
-            <form>
+            <form method="POST" action="{{ route('login.authenticate') }}">
+                @csrf
 
-                <!-- Username -->
+                <!-- Email -->
                 <div class="mb-5">
                     <label class="block mb-2">
-                        E-mail atau Username
+                        E-mail
                     </label>
 
-                    <input type="text"
-                        placeholder="Masukkan E-mail atau username Anda"
+                    <input type="email"
+                        name="email"
+                        value="{{ old('email') }}"
+                        autocomplete="email"
+                        required
+                        placeholder="Masukkan e-mail Anda"
                         class="w-full border-2 border-gray-300 rounded-xl px-4 py-3 outline-none">
+                    @error('email')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Password -->
@@ -57,8 +65,14 @@
                     </label>
 
                     <input type="password"
+                        name="password"
+                        autocomplete="current-password"
+                        required
                         placeholder="Masukkan password Anda"
                         class="w-full border-2 border-gray-300 rounded-xl px-4 py-3 outline-none">
+                    @error('password')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Lupa Password -->

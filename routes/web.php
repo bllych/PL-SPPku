@@ -27,7 +27,8 @@ Route::get('/students/{id}/notifications', [StudentController::class, 'notificat
 // Manajemen Admin
 
 // Halaman Utama Admin
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
+    ->name('admin.dashboard');
 // Halaman Profile Admin
 Route::get('/admin/profile', [AdminController::class, 'show']);
 // Halaman Laporan Pembayaran Admin
@@ -42,3 +43,6 @@ Route::get('/admin/reports', [AdminController::class, 'reports']);
 // Halaman Login
 Route::get('/login', [AuthController::class, 'login'])
     ->name('login');
+Route::post('/login', [AuthController::class, 'authenticate'])
+    ->middleware('throttle:5,1')
+    ->name('login.authenticate');

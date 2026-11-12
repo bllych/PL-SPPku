@@ -2,25 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
-        // Mass Assign
-        // User::create([
-        //     'name' => 'Bily',
-        //     'email' => 'bily@gmail.com'
-        // ]);
-
-        // Tanpa Mass Assign
-        $user = new User();
-        $user->name = 'Bily';
-        $user->email = 'bily@gmail.com';
-        $user->save();
-
         $title = "SPPku - Halaman Admin";
         $students = [
             [
