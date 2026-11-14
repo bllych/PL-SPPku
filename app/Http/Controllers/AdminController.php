@@ -272,11 +272,24 @@ class AdminController extends Controller
         return view('admin.notification-view', compact('title'));
     }
 
+    
     public function show()
     {
         $title = "SPPku - Halaman Profile Admin";
-        return view('admin.show', compact('title'));
+
+        $admin = [
+            'name' => 'Rayson Velnoc',
+            'username' => 'Ray_Velnoc',
+            'phone' => '0899 9099 9909',
+            'email' => 'rayson_V@ski.sch.id',
+            'account_status' => 'Aktif',
+            'admin_id' => 'ADM001',
+            'position' => 'Staff Administrasi',
+            'institution' => 'SMK Kristen Immanuel',
+        ];
+        return view('admin.show', compact('title', 'admin'));
     }
+
 
     public function reports()
     {

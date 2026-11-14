@@ -1,7 +1,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Profil Siswa')
+@section('title', 'SPPku - Profil Siswa')
 
 @section('content')
 <div class="min-h-full bg-[#F3F5FF] px-5 py-2 md:px-1">

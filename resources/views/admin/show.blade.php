@@ -1,139 +1,166 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-<div class="min-h-full bg-[#F3F5FF] px-5 py-5 md:px-10">
+@extends('layouts.app')
 
-    {{-- PROFIL PRIBADI --}}
-    <h2 class="mb-4 text-sm font-semibold text-[#45C0F4]">
-        PROFIL PRIBADI
-    </h2>
+@section('title', $title)
 
-    <div class="mb-6 grid grid-cols-1 items-center gap-6 rounded-md bg-white px-6 py-4 shadow-md md:grid-cols-[30%_70%] md:gap-0">
+@section('content')
 
-        {{-- Foto --}}
-        <div class="flex flex-col items-center justify-center">
-            <div class="relative">
-                <img
-                    src="{{ asset('images/profile student.png') }}"
-                    alt="Foto Profil Siswa"
-                    class="h-24 w-24 rounded-full object-cover"
-                >
+@php
+    $profileFields = [
+        'Nama' => $admin['name'],
+        'Username' => $admin['username'],
+        'No. Hp' => $admin['phone'],
+        'E-Mail' => $admin['email'],
+        'Status Akun' => $admin['account_status'],
+        'ID Admin' => $admin['admin_id'],
+        'Jabatan' => $admin['position'],
+        'Instansi' => $admin['institution'],
+    ];
 
-                <a href="#" title="Edit profil"
-                   class="absolute -right-4 bottom-0">
+    $notes = [
+        [
+            'date' => '21/Agu/2026',
+            'items' => [
+                'Perbaiki excel siswa 12 tkj 1',
+                'kumpulkan laporan ke kepala sekolah',
+                'ketemu dengan kantor administrasi',
+            ],
+        ],
+        [
+            'date' => '1/Sep/2026',
+            'items' => [
+                'pengumpulan laporan akhir spp agu',
+                'hitung pembayaran spp',
+                'cek ulang dan ingatin pembayaran spp',
+            ],
+        ],
+    ];
+@endphp
+
+<div class="min-h-full bg-[#F3F5FF] px-5 py-5 md:px-1">
+
+    <div class="grid grid-cols-1 gap-9 lg:grid-cols-[1.35fr_0.9fr]">
+
+        {{-- KOLOM KIRI --}}
+        <div class="flex flex-col gap-5">
+
+            {{-- Welcome Profile --}}
+            <div class="flex items-center gap-4 rounded-l-[90px] bg-white px-5 py-4 shadow-md">
+
+                <div class="shrink-0">
                     <img
-                        src="{{ asset('images/icons/edit profile student.png') }}"
-                        alt="Edit profil"
-                        class="h-5 w-5 object-contain"
+                        src="{{ asset('images/profile admin.png') }}"
+                        alt="Foto Profil Admin"
+                        class="h-30 w-30 rounded-full object-cover"
                     >
-                </a>
+                </div>
+
+                <div class="min-w-0 flex-1">
+                    <h2 class="text-lg font-bold text-[#45C0F4] md:text-lg">
+                        Welcome Back, {{ $admin['name'] }}!
+                    </h2>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <p class="text-base font-semibold text-[#4E4E4E]">
+                            Do your best! Tuhan menyertai
+                        </p>
+
+                        <a href="#" title="Edit profil">
+                            <img
+                                src="{{ asset('images/icons/edit profile student.png') }}"
+                                alt="Edit profil"
+                                class="h-4 w-4 object-contain"
+                            >
+                        </a>
+                    </div>
+                </div>
+
             </div>
 
-            <p class="mt-3 text-sm font-semibold text-[#4E4E4E]">
-                SMK Kristen Immanuel
-            </p>
-        </div>
+            {{-- Informasi Akun --}}
+            <div>
+                <h2 class="mb-3 text-lg font-bold text-[#45C0F4]">
+                    INFORMASI AKUN
+                </h2>
 
-        {{-- Data pribadi --}}
-        <div class="min-w-0">
-            @php
-                $profileFields = [
-                    'Nama' => $student['profile']['name'],
-                    'NISN/Nomor Induk' => $student['profile']['nisn'].'/'.$student['profile']['nis'],
-                    'Kelas' => $student['profile']['class'],
-                    'Jurusan' => $student['profile']['major'],
-                    'Tahun Ajaran' => $student['profile']['school_year'],
-                ];
-            @endphp
+                <div class="rounded-md bg-white px-6 py-4 shadow-md">
 
-            @foreach ($profileFields as $label => $value)
-                <div class="flex min-h-[36px] items-center justify-between gap-3 border-b border-[#E5E5E5] py-2 last:border-b-0">
-                    <span class="text-sm text-[#4E4E4E]">
-                        {{ $label }}
-                    </span>
+                    @foreach ($profileFields as $label => $value)
+                        <div class="flex min-h-[31px] items-center justify-between gap-3 py-1.5">
 
-                    <span class="text-right text-sm text-[#999999]">
-                        {{ $value }}
-                    </span>
+                            <span class="text-base font-medium text-[#4E4E4E]">
+                                {{ $label }}
+                            </span>
+
+                            <span class="text-right text-base font-medium text-[#999999]">
+                                {{ $value }}
+                            </span>
+
+                        </div>
+                    @endforeach
+
                 </div>
-            @endforeach
-        </div>
-    </div>
+            </div>
 
-    {{-- KEAMANAN DAN INFORMASI AKUN --}}
-    <h2 class="mb-4 text-sm font-semibold text-[#45C0F4]">
-        KEAMANAN DAN INFORMASI AKUN
-    </h2>
-
-    <div class="grid grid-cols-1 gap-6 rounded-md bg-white px-6 py-4 shadow-md md:grid-cols-2 md:gap-8">
-
-        {{-- Kolom kiri --}}
-        <div class="min-w-0">
-            @php
-                $accountFields = [
-                    'Password' => $student['account']['password'],
-                    'Email' => $student['account']['email'],
-                    'No. Telepon' => $student['account']['phone'],
-                    'Terakhir Login' => $student['account']['last_login'],
-                    'Status Akun' => $student['account']['account_status'],
-                ];
-            @endphp
-
-            @foreach ($accountFields as $label => $value)
-                <div class="flex min-h-[36px] items-center justify-between gap-3 border-b border-[#E5E5E5] py-2 last:border-b-0">
-                    <span class="text-sm text-[#4E4E4E]">
-                        {{ $label }}
-                    </span>
-
-                    <span class="break-all text-right text-sm {{ $label === 'Status Akun' ? 'text-green-500' : 'text-[#999999]' }}">
-                        {{ $value }}
-                    </span>
-                </div>
-            @endforeach
-        </div>
-
-        {{-- Kolom kanan --}}
-        <div class="min-w-0">
-            @php
-                $attendanceFields = [
-                    'Pelanggaran' => $student['attendance']['warning'],
-                    'Sakit' => $student['attendance']['sick'],
-                    'Izin' => $student['attendance']['permission'],
-                    'Terlambat' => $student['attendance']['late'],
-                ];
-            @endphp
-
-            @foreach ($attendanceFields as $label => $value)
-                <div class="flex min-h-[36px] items-center justify-between gap-3 border-b border-[#E5E5E5] py-2 last:border-b-0">
-                    <span class="text-sm text-[#4E4E4E]">
-                        {{ $label }}
-                    </span>
-
-                    <span class="text-sm text-[#999999]">
-                        {{ $value }}
-                    </span>
-                </div>
-            @endforeach
-
-            <div class="flex justify-end pt-4">
-                <a href="{{ url('/login') }}"
-                   class="rounded-md bg-[#45C0F4] px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500">
+            {{-- Keluar Akun --}}
+            <div>
+                <a
+                    href="{{ url('/login') }}"
+                    class="inline-flex items-center justify-center rounded-md bg-[#45C0F4] px-6 py-3 text-base font-bold text-white shadow-sm transition hover:bg-sky-500"
+                >
                     Keluar Akun
                 </a>
             </div>
+
+        </div>
+
+
+        {{-- KOLOM KANAN --}}
+        <div>
+
+            {{-- Catatan Pribadi --}}
+            <h2 class="mb-3 text-lg font-bold text-[#45C0F4]">
+                CATATAN PRIBADI
+            </h2>
+
+            <div class="rounded-md bg-white px-5 py-3 shadow-md">
+
+                @foreach ($notes as $note)
+                    <div class="mb-4 last:mb-0">
+
+                        {{-- Tanggal --}}
+                        <p class="mb-3 text-base font-medium text-[#4E4E4E]">
+                            {{ $note['date'] }}
+                        </p>
+
+                        {{-- Isi Catatan --}}
+                        <div class="flex flex-col gap-3">
+                            @foreach ($note['items'] as $item)
+                                <p class="text-base font-medium leading-relaxed text-[#999999]">
+                                    {{ $item }}
+                                </p>
+                            @endforeach
+                        </div>
+
+                    </div>
+                @endforeach
+
+            </div>
+
+            {{-- Tambahkan Catatan --}}
+            <div class="mt-3">
+                <button
+                    type="button"
+                    class="w-full rounded-md border-3 border-[#45C0F4] bg-white px-5 py-3 text-base font-bold text-[#45C0F4] transition hover:bg-[#EAF8FF]"
+                >
+                    Tambahkan Catatan
+                </button>
+            </div>
+
         </div>
 
     </div>
 
 </div>
-    
-</body>
-</html>
 
 @endsection
