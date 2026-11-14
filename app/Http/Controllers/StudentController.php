@@ -98,6 +98,8 @@ class StudentController extends Controller
             abort(404);
         }
 
+        $student = collect($students)->firstWhere('profile.id', $id);
+
         return view('student.show', compact('title', 'id', 'student'));
     }
 
