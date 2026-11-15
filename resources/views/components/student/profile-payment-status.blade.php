@@ -11,11 +11,11 @@
 
         <div>
             <p class="text-[#45C0F4] font-bold text-lg">
-                MAXENDRA ALEXIUS KAENDRA
+                {{ $student->user->name }}
             </p>
 
             <p class="text-[#4E4E4E] font-semibold">
-                XII TKJ 1
+                {{ $student->class }}
             </p>
 
             <p class="text-[#4E4E4E] font-semibold">

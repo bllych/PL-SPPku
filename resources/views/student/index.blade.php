@@ -13,7 +13,7 @@
     <div class="flex flex-col gap-5">
 
         {{-- PROFILE + STATUS PEMBAYARAN --}}
-        <x-student.profile-payment-status />
+        <x-student.profile-payment-status :student="$student" />
 
 
         {{-- BAGIAN BAWAH --}}
@@ -31,35 +31,35 @@
                     <div class="flex justify-between">
                         <span class="text-[#4E4E4E] font-semibold">Nama</span>
                         <span class="text-[#999999] font-medium">
-                            Maxendra Alexius Kaendra
+                            {{ $student->user->name }}
                         </span>
                     </div>
 
                     <div class="flex justify-between">
                         <span class="text-[#4E4E4E] font-semibold">NISN/Nomor Induk</span>
                         <span class="text-[#999999] font-medium">
-                            0094512345/9696
+                            {{ $student->nisn }}/{{ $student->nis }}
                         </span>
                     </div>
 
                     <div class="flex justify-between">
                         <span class="text-[#4E4E4E] font-semibold">Tahun Ajaran</span>
                         <span class="text-[#999999] font-medium">
-                            2026/2027
+                            {{ $student->school_year }}
                         </span>
                     </div>
 
                     <div class="flex justify-between">
-                        <span class="text-[#4E4E4E] font-semibold">Semester</span>
+                        <span class="text-[#4E4E4E] font-semibold">Kelas</span>
                         <span class="text-[#999999] font-medium">
-                            Ganjil
+                            {{ $student->class }}
                         </span>
                     </div>
 
                     <div class="flex justify-between">
-                        <span class="text-[#4E4E4E] font-semibold">Total Bulan</span>
+                        <span class="text-[#4E4E4E] font-semibold">Jurusan</span>
                         <span class="text-[#999999] font-medium">
-                            6 Bulan
+                            {{ $student->major }}
                         </span>
                     </div>
 
