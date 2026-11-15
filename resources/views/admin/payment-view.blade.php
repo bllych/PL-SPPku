@@ -13,7 +13,7 @@
 
         <div class="flex flex-row justify-between">
             <div>
-                <p class="font-semibold text-[#45C0F4] text-xl">CEK PEMBAYARAN</p>
+                <p class="font-bold text-[#45C0F4] text-lg">CEK PEMBAYARAN</p>
                 <p class="font-medium text-[#999999] text-sm">Verifikasi pembayaran SPP siswa</p>
             </div>
             <div class="flex items-center gap-4">
