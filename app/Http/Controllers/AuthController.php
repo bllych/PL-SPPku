@@ -72,7 +72,7 @@ class AuthController extends Controller
 
             abort_if($student === null, 403);
 
-            return to_route('students.show', ['id' => $student->id]);
+            return to_route('students.index', ['id' => $student->id]);
         }
 
         abort(403);

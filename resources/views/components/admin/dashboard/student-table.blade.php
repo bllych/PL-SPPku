@@ -224,7 +224,7 @@
                                                     whitespace-nowrap
                                                 ">
 
-                            <a href="/students/{{ $student['id'] }}" class="
+                            <a href="/students/{{ $student['id'] }}/profile" class="
                                                         text-[#FFC857]
                                                         hover:underline
                                                     ">

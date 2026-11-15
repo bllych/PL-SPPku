@@ -14,9 +14,9 @@ Route::post('/login', [AuthController::class, 'authenticate'])
 
 Route::middleware('auth')->group(function (): void {
     Route::middleware('role:student')->group(function (): void {
-        Route::get('/students', [StudentController::class, 'index'])
+        Route::get('/students/{id}', [StudentController::class, 'index'])
             ->name('students.index');
-        Route::get('/students/{id}', [StudentController::class, 'show'])
+        Route::get('/students/{id}/profile', [StudentController::class, 'show'])
             ->name('students.show');
         Route::get('/students/{id}/payments', [StudentController::class, 'payments']);
         Route::get('/students/{id}/notifications', [StudentController::class, 'notifications']);
