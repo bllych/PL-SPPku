@@ -256,6 +256,7 @@ class AdminController extends Controller
             ],
         ];
 
+
         return view('admin.dashboard', compact('title', 'students'));
     }
 
