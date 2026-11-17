@@ -2,14 +2,79 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class AuthController extends Controller
 {
     //
-    public function login()
+    public function home(): RedirectResponse
     {
-        $title = "SPPku - Halaman Login";
+        if (! Auth::check()) {
+            return to_route('login');
+        }
+
+        return $this->redirectAuthenticatedUser();
+    }
+
+    public function login(): View|RedirectResponse
+    {
+        if (Auth::check()) {
+            return $this->redirectAuthenticatedUser();
+        }
+
+        $title = 'SPPku - Halaman Login';
+
         return view('auth.login', compact('title'));
+    }
+
+    public function authenticate(Request $request): RedirectResponse
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
+        ]);
+
+        if (! Auth::attempt($credentials)) {
+            return back()
+                ->withErrors(['email' => 'Email atau kata sandi salah.'])
+                ->onlyInput('email');
+        }
+
+        $request->session()->regenerate();
+
+        return $this->redirectAuthenticatedUser();
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return to_route('login');
+    }
+
+    private function redirectAuthenticatedUser(): RedirectResponse
+    {
+        $user = Auth::user();
+
+        abort_if($user === null, 403);
+
+        if ($user->role === 'admin') {
+            return to_route('admin.dashboard');
+        }
+
+        if ($user->role === 'student') {
+            $student = $user->student;
+
+            abort_if($student === null, 403);
+
+            return to_route('students.index', ['id' => $student->id]);
+        }
+
+        abort(403);
     }
 }
