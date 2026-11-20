@@ -16,7 +16,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    public function student(): HasOne
+    public function student()
     {
         return $this->hasOne(Student::class);
     }

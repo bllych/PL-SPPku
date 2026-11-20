@@ -42,8 +42,28 @@ class StudentController extends Controller
 
     public function notifications($id)
     {
-        $title = 'SPPku - Halaman Notifikasi Siswa';
+        $title = 'SPPku - Notifikasi Siswa';
+        $student = Student::with('user')->findOrFail($id);
 
-        return view('student.notification-view', compact('title', 'id'));
+        $notifications = [
+            [
+                'icon' => 'success',
+                'type' => 'Pembayaran Berhasil',
+                'title' => 'Pembayaran SPP Terverifikasi',
+                'message' => 'Pembayaran SPP bulan November 2026 sebesar Rp 840.000 telah diverifikasi oleh admin.',
+                'time' => 'Hari ini, 09:30 WIB',
+                'read' => false,
+            ],
+            [
+                'icon' => 'warning',
+                'type' => 'Pengingat Tagihan',
+                'title' => 'Tagihan SPP Bulan Desember',
+                'message' => 'Tagihan SPP bulan Desember 2026 jatuh tempo pada tanggal 10 Desember 2026.',
+                'time' => '2 hari yang lalu',
+                'read' => true,
+            ],
+        ];
+
+        return view('student.notification-view', compact('title', 'student', 'notifications'));
     }
 }

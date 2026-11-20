@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,7 +10,6 @@ use Illuminate\View\View;
 
 class AuthController extends Controller
 {
-    //
     public function home(): RedirectResponse
     {
         if (! Auth::check()) {
@@ -61,20 +61,34 @@ class AuthController extends Controller
     {
         $user = Auth::user();
 
-        abort_if($user === null, 403);
+        if ($user === null) {
+            return to_route('login');
+        }
 
         if ($user->role === 'admin') {
             return to_route('admin.dashboard');
         }
 
         if ($user->role === 'student') {
-            $student = $user->student;
+            $student = Student::where('user_id', $user->id)->first();
 
-            abort_if($student === null, 403);
+            if ($student === null) {
+                Auth::logout();
+                request()->session()->invalidate();
+                request()->session()->regenerateToken();
+
+                return to_route('login')->withErrors([
+                    'email' => 'Akun ini belum terhubung dengan data siswa di tabel students.',
+                ]);
+            }
 
             return to_route('students.index', ['id' => $student->id]);
         }
 
-        abort(403);
+        Auth::logout();
+
+        return to_route('login')->withErrors([
+            'email' => 'Role akun tidak valid.',
+        ]);
     }
 }
