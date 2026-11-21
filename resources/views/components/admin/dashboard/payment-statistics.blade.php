@@ -24,7 +24,8 @@
             </h2>
 
 
-            <select class="
+            <form method="GET" action="{{ route('admin.dashboard') }}">
+                <select name="period" aria-label="Periode tagihan" onchange="this.form.submit()" class="
                                 border
                                 border-gray-300
                                 rounded-[6px]
@@ -35,14 +36,13 @@
                                 bg-white
                                 focus:outline-none
                             ">
-
-                <option>Agustus</option>
-                <option>September</option>
-                <option>Oktober</option>
-                <option>November</option>
-                <option>Desember</option>
-
-            </select>
+                    @foreach ($periodOptions as $period => $periodLabel)
+                        <option value="{{ $period }}" @selected($selectedPeriod === $period)>
+                            {{ $periodLabel }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
 
         </div>
 
@@ -74,7 +74,7 @@
                                     font-bold
                                     text-[20px]
                                 ">
-                    573
+                    {{ $totalStudents }}
                 </span>
 
             </div>
@@ -101,7 +101,7 @@
                                     font-bold
                                     text-[20px]
                                 ">
-                    359
+                    {{ $paidStudents }}
                 </span>
 
             </div>
@@ -128,7 +128,7 @@
                                     font-bold
                                     text-[20px]
                                 ">
-                    214
+                    {{ $unpaidStudents }}
                 </span>
 
             </div>

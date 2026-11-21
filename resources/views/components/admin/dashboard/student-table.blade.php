@@ -21,7 +21,7 @@
 
                     {{-- TAGIHAN --}}
                     <th class="w-[220px] px-3 py-3 text-left text-gray-700 font-bold text-[18px]">
-                        Tagihan
+                        Tagihan {{ $selectedPeriodLabel }}
                     </th>
 
                     {{-- STATUS --}}
@@ -42,7 +42,7 @@
                     <tr class="border-b border-gray-200 hover:bg-gray-50 transition">
                         {{-- NO --}}
                         <td class="px-3 py-2.5 text-center text-gray-700 font-semibold text-[18px]">
-                            {{ $student['id'] }}
+                            {{ $student['number'] }}
                         </td>
 
                         {{-- NAMA --}}
@@ -62,20 +62,22 @@
 
                         {{-- STATUS --}}
                         <td class="px-3 py-2.5 text-left font-semibold text-[18px] whitespace-nowrap">
-                            @if ($student['status'] === 'Lunas')
-                                <span class="text-green-500">
-                                    Lunas
-                                </span>
-                            @else
-                                <span class="text-red-400">
-                                    Belum Lunas
-                                </span>
-                            @endif
+                            @php
+                                $statusClass = match ($student['status']) {
+                                    'Lunas' => 'text-green-500',
+                                    'Terlambat' => 'text-red-600',
+                                    'Belum Lunas' => 'text-red-400',
+                                    default => 'text-gray-400',
+                                };
+                            @endphp
+                            <span class="{{ $statusClass }}">
+                                {{ $student['status'] }}
+                            </span>
                         </td>
 
                         {{-- AKSI --}}
                         <td class="px-3 py-2.5 text-left font-semibold text-[18px] whitespace-nowrap">
-                            <a href="/students/{{ $student['id'] }}/profile" class="text-[#FFC857] hover:underline">
+                            <a href="{{ route('students.show', ['id' => $student['id']]) }}" class="text-[#FFC857] hover:underline">
                                 Detail
                             </a>
                         </td>
