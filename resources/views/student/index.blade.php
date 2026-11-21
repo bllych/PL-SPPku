@@ -13,7 +13,10 @@
     <div class="flex flex-col gap-5">
 
         {{-- PROFILE + STATUS PEMBAYARAN --}}
-        <x-student.profile-payment-status :student="$student" />
+        <x-student.profile-payment-status
+            :student="$student"
+            :semester-payment-statuses="$semesterPaymentStatuses"
+        />
 
 
         {{-- BAGIAN BAWAH --}}
@@ -66,14 +69,14 @@
                     <div class="flex justify-between">
                         <span class="text-[#4E4E4E] font-semibold">Sudah Dibayar</span>
                         <span class="text-[#999999] font-medium">
-                            2 Bulan
+                            {{ $semesterPaidCount }} Bulan
                         </span>
                     </div>
 
                     <div class="flex justify-between">
                         <span class="text-[#4E4E4E] font-semibold">Sisa Pembayaran</span>
                         <span class="text-[#999999] font-medium">
-                            4 Bulan
+                            {{ $semesterOutstandingCount }} Bulan
                         </span>
                     </div>
 

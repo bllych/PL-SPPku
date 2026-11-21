@@ -1,3 +1,5 @@
+@props(['student', 'semesterPaymentStatuses'])
+
 <div class="bg-white rounded-xl shadow-md p-3 flex items-center">
 
     {{-- Profile --}}
@@ -38,32 +40,23 @@
             >
         </h2>
 
-        <div class="flex gap-5">
+        <div class="flex flex-wrap gap-3">
+            @foreach ($semesterPaymentStatuses as $semesterPaymentStatus)
+                <div
+                    title="{{ $semesterPaymentStatus['period'] }}: {{ $semesterPaymentStatus['status'] }}"
+                    aria-label="{{ $semesterPaymentStatus['period'] }}: {{ $semesterPaymentStatus['status'] }}"
+                    class="flex h-11 w-11 items-center justify-center rounded-full text-sm {{ $semesterPaymentStatus['class'] }}"
+                >
+                    {{ $semesterPaymentStatus['month'] }}
+                </div>
+            @endforeach
+        </div>
 
-            <div class="w-11 h-11 rounded-full bg-[#45C0F4] text-white text-sm flex items-center justify-center">
-                Jul
-            </div>
-
-            <div class="w-11 h-11 rounded-full bg-[#45C0F4] text-white text-sm flex items-center justify-center">
-                Agu
-            </div>
-
-            <div class="w-11 h-11 rounded-full bg-[#999999] text-white text-sm flex items-center justify-center">
-                Sep
-            </div>
-
-            <div class="w-11 h-11 rounded-full bg-[#999999] text-white text-sm flex items-center justify-center">
-                Okt
-            </div>
-
-            <div class="w-11 h-11 rounded-full bg-[#999999] text-white text-sm flex items-center justify-center">
-                Nov
-            </div>
-
-            <div class="w-11 h-11 rounded-full bg-[#999999] text-white text-sm flex items-center justify-center">
-                Des
-            </div>
-
+        <div class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500" aria-label="Keterangan status tagihan">
+            <span class="flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full bg-[#45C0F4]"></span>Lunas</span>
+            <span class="flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full bg-[#999999]"></span>Belum lunas</span>
+            <span class="flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full bg-[#F43F5E]"></span>Terlambat</span>
+            <span class="flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full border border-dashed border-gray-400 bg-white"></span>Belum ada tagihan</span>
         </div>
 
     </div>

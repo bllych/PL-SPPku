@@ -14,48 +14,25 @@
             </h1>
 
             <p class="mt-1 text-[16px] text-gray-400">
-                Informasi tentang riwayat & bukti pembayaran SPP anda
+                Riwayat tagihan SPP milik {{ $student->user->name }}
             </p>
         </div>
 
-        <!-- FILTER -->
-        <x-student.payment.filter />
+        <x-student.payment.filter
+            :school-years="$schoolYears"
+            :selected-school-year="$selectedSchoolYear"
+            :selected-status="$selectedStatus"
+            :search="$search"
+        />
 
-        <!-- PAYMENT LIST -->
         <div class="space-y-5">
-
-            <x-student.payment.payment-card
-                month="April 2026"
-                amount="Rp 850.000"
-                date="s/d 15 April 2026"
-                method="QRIS"
-                status="Belum Lunas"
-            />
-
-            <x-student.payment.payment-card
-                month="Maret 2026"
-                amount="Rp 850.000"
-                date="s/d 15 Maret 2026"
-                method="Transfer Bank"
-                status="Terlambat"
-            />
-
-            <x-student.payment.payment-card
-                month="Febuari 2026"
-                amount="Rp 850.000"
-                date="10 Februari 2026"
-                method="E-Wallet (OVO)"
-                status="Lunas"
-            />
-
-            <x-student.payment.payment-card
-                month="Januari 2026"
-                amount="Rp 850.000"
-                date="08 Januari 2025"
-                method="Tunai (Kas Sekolah)"
-                status="Lunas"
-            />
-
+            @forelse ($payments as $payment)
+                <x-student.payment.payment-card :payment="$payment" />
+            @empty
+                <div class="rounded-xl border border-gray-200 bg-white px-6 py-10 text-center text-gray-500 shadow-sm">
+                    Tidak ada tagihan yang cocok dengan filter ini.
+                </div>
+            @endforelse
         </div>
 
     </div>
