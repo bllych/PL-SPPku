@@ -96,7 +96,13 @@
 
 
             {{-- PEMBAYARAN SELANJUTNYA --}}
-            <x-student.next-payment />
+            <x-student.next-payment
+                :period="$currentPeriod"
+                :amount="$currentBillAmount"
+                :due-date="$currentBillDueDate"
+                :date="$currentDateLabel"
+                :student-name="$student->user->name"
+            />
 
         </div>
 

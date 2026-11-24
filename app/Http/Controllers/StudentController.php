@@ -63,12 +63,45 @@ class StudentController extends Controller
         $semesterPaidCount = $semesterBills->where('status', 'paid')->count();
         $semesterOutstandingCount = $semesterBills->where('status', '!=', 'paid')->count();
 
+        $monthNames = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+        ];
+        $currentDate = now();
+        $currentDateLabel = $currentDate->format('d').' '.$monthNames[$currentDate->month].' '.$currentDate->year;
+        $currentMonthBill = $student->bills()
+            ->where('school_year', $student->school_year)
+            ->where('month', $currentDate->month)
+            ->whereYear('due_date', $currentDate->year)
+            ->first(['student_id', 'amount', 'due_date']);
+        $currentPeriod = $monthNames[$currentDate->month].' '.$currentDate->year;
+        $currentBillAmount = $currentMonthBill
+            ? 'Rp '.number_format((float) $currentMonthBill->amount, 0, ',', '.')
+            : 'Tagihan belum tersedia';
+        $currentBillDueDate = $currentMonthBill?->due_date
+            ? $currentMonthBill->due_date->format('d').' '.$monthNames[$currentMonthBill->due_date->month].' '.$currentMonthBill->due_date->year
+            : '15 '.$monthNames[$currentDate->month].' '.$currentDate->year;
+
         return view('student.index', compact(
             'title',
             'student',
             'semesterPaymentStatuses',
             'semesterPaidCount',
             'semesterOutstandingCount',
+            'currentPeriod',
+            'currentBillAmount',
+            'currentBillDueDate',
+            'currentDateLabel',
         ));
     }
 
