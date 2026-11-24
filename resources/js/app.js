@@ -10,6 +10,21 @@ document.addEventListener('submit', (event) => {
     }
 });
 
+document.querySelectorAll('[data-whatsapp-open]').forEach((openButton) => {
+    const confirmationDialog = document.querySelector('[data-whatsapp-confirmation]');
+
+    if (!(openButton instanceof HTMLButtonElement)
+        || !(confirmationDialog instanceof HTMLDialogElement)) {
+        return;
+    }
+
+    openButton.addEventListener('click', () => confirmationDialog.showModal());
+
+    confirmationDialog.querySelector('[data-whatsapp-cancel]')?.addEventListener('click', () => {
+        confirmationDialog.close();
+    });
+});
+
 document.querySelectorAll('[data-payment-flow]').forEach((paymentFlow) => {
     const openButton = paymentFlow.querySelector('[data-payment-open]');
     const summaryDialog = paymentFlow.querySelector('[data-payment-summary]');
