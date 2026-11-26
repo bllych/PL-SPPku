@@ -7,16 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable([
-    'bill_id',
     'user_id',
+    'bill_id',
     'amount',
     'payment_method',
     'transaction_date',
     'proof_image',
     'status',
-    'verified_at',
     'note',
+    'verified_at',
 ])]
+
 class Transaction extends Model
 {
     protected $attributes = [

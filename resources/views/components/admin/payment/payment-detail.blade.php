@@ -16,6 +16,14 @@
                 'rejected' => 'bg-red-50 text-red-600 border-red-400',
                 default => 'bg-amber-50 text-amber-600 border-amber-400',
             };
+
+            $recommendedNotes = [
+                'Pembayaran valid, terima kasih.',
+                'Bukti transfer buram/tidak terbaca, silakan unggah ulang foto yang lebih jelas.',
+                'Nominal transfer tidak sesuai dengan jumlah tagihan SPP.',
+                'Rekening tujuan atau tanggal transfer tidak valid, silakan cek kembali bukti pembayaran Anda.',
+                'Dana belum masuk ke mutasi rekening sekolah, silakan hubungi bagian Tata Usaha.',
+            ];
         @endphp
 
         <div>
@@ -74,11 +82,26 @@
             @method('PATCH')
 
             <div>
-                <label class="block text-[11px] font-medium text-gray-500 mb-1">
+                <label for="adminNote" class="block text-[11px] font-medium text-gray-500 mb-1">
                     Catatan / Alasan Penolakan (wajib jika ditolak)
                 </label>
-                <textarea id="adminNote" name="note" rows="2" placeholder="Tulis catatan atau alasan penolakan..."
+                <textarea id="adminNote" name="note" rows="2" placeholder="Tulis catatan atau pilih rekomendasi di bawah..."
                     class="w-full rounded-lg border border-gray-200 p-2 text-xs text-[#4E4E4E] focus:border-[#45C0F4] focus:outline-none">{{ old('note', $payment->note) }}</textarea>
+
+                {{-- Rekomendasi Komentar Cepat --}}
+                <div class="mt-1.5">
+                    <p class="text-[10px] font-medium text-gray-400 mb-1">Rekomendasi catatan cepat:</p>
+                    <div class="flex flex-wrap gap-1">
+                        @foreach ($recommendedNotes as $recNote)
+                            <button type="button"
+                                onclick="const box = document.getElementById('adminNote'); box.value = this.dataset.note; box.focus();"
+                                data-note="{{ $recNote }}"
+                                class="text-left rounded-md border border-sky-200 bg-sky-50/70 hover:bg-sky-100 px-2 py-1 text-[10px] leading-snug text-[#4E4E4E] transition-colors cursor-pointer">
+                                {{ \Illuminate\Support\Str::limit($recNote, 45) }}
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
             </div>
 
             <div class="grid grid-cols-2 gap-2">
@@ -87,7 +110,7 @@
                     Terima Pembayaran
                 </button>
                 <button type="submit" name="status" value="rejected"
-                    onclick="if(!document.getElementById('adminNote').value.trim()){ alert('Harap isi alasan penolakan pada kolom catatan terlebih dahulu!'); return false; }"
+                    onclick="if(!document.getElementById('adminNote').value.trim()){ alert('Harap isi atau pilih alasan penolakan terlebih dahulu!'); return false; }"
                     class="w-full rounded-lg bg-[#DC3545] hover:bg-red-600 py-2 text-xs font-semibold text-white transition-colors cursor-pointer">
                     Tolak Pembayaran
                 </button>
