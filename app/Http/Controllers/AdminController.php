@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminNote;
 use App\Models\Student;
 use App\Models\Transaction;
+use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -14,98 +17,76 @@ class AdminController extends Controller
     {
         $title = 'SPPku - Halaman Admin';
         $schoolYear = '2026/2027';
-        [$schoolYearStart, $schoolYearEnd] = array_map('intval', explode('/', $schoolYear));
-        $monthNames = [
-            1 => 'Januari',
-            2 => 'Februari',
-            3 => 'Maret',
-            4 => 'April',
-            5 => 'Mei',
-            6 => 'Juni',
-            7 => 'Juli',
-            8 => 'Agustus',
-            9 => 'September',
-            10 => 'Oktober',
-            11 => 'November',
-            12 => 'Desember',
-        ];
+        [$startYear, $endYear] = array_map('intval', explode('/', $schoolYear));
 
+        // Buat opsi periode Jul-Des (2026) & Jan-Jun (2027)
         $periodOptions = [];
-
-        foreach (range(7, 12) as $month) {
-            $period = sprintf('%04d-%02d', $schoolYearStart, $month);
-            $periodOptions[$period] = $monthNames[$month] . ' ' . $schoolYearStart;
+        foreach ([...range(7, 12), ...range(1, 6)] as $m) {
+            $y = $m >= 7 ? $startYear : $endYear;
+            $periodOptions[sprintf('%04d-%02d', $y, $m)] = Carbon::create($y, $m, 1)->translatedFormat('F Y');
         }
 
-        foreach (range(1, 6) as $month) {
-            $period = sprintf('%04d-%02d', $schoolYearEnd, $month);
-            $periodOptions[$period] = $monthNames[$month] . ' ' . $schoolYearEnd;
-        }
-
-        $defaultPeriod = now()->format('Y-m');
-
-        if (!array_key_exists($defaultPeriod, $periodOptions)) {
-            $defaultPeriod = array_key_first($periodOptions);
-        }
-
-        $selectedPeriod = $request->query('period');
-
-        if (!is_string($selectedPeriod) || !array_key_exists($selectedPeriod, $periodOptions)) {
-            $selectedPeriod = $defaultPeriod;
-        }
+        $selectedPeriod = array_key_exists((string) $request->query('period'), $periodOptions)
+            ? $request->query('period')
+            : (array_key_exists(now()->format('Y-m'), $periodOptions) ? now()->format('Y-m') : array_key_first($periodOptions));
 
         [$calendarYear, $selectedMonth] = array_map('intval', explode('-', $selectedPeriod));
         $selectedPeriodLabel = $periodOptions[$selectedPeriod];
 
-        $studentsQuery = Student::where('school_year', $schoolYear);
-        $totalStudents = (clone $studentsQuery)->count();
-        $paidStudents = (clone $studentsQuery)->whereHas('bills', function ($query) use ($selectedMonth, $schoolYear, $calendarYear): void {
-            $query->where('month', $selectedMonth)
-                ->where('status', 'paid')
-                ->where('school_year', $schoolYear)
-                ->whereYear('due_date', $calendarYear);
-        })->count();
-        $unpaidStudents = (clone $studentsQuery)->whereHas('bills', function ($query) use ($selectedMonth, $schoolYear, $calendarYear): void {
-            $query->where('month', $selectedMonth)
-                ->whereIn('status', ['unpaid', 'overdue'])
-                ->where('school_year', $schoolYear)
-                ->whereYear('due_date', $calendarYear);
-        })->count();
+        $baseQuery = Student::where('school_year', $schoolYear);
 
-        $students = (clone $studentsQuery)->with([
-            'user:id,name',
-            'bills:id,student_id,month,school_year,amount,due_date,status',
-        ])->paginate(10);
+        // Statistik kartu atas (berdasarkan seluruh siswa tahun ajaran aktif)
+        $totalStudents = (clone $baseQuery)->count();
+        $paidStudents = (clone $baseQuery)->whereHas('bills', fn($q) => $q->where('month', $selectedMonth)->where('school_year', $schoolYear)->whereYear('due_date', $calendarYear)->where('status', 'paid'))->count();
+        $unpaidStudents = (clone $baseQuery)->whereHas('bills', fn($q) => $q->where('month', $selectedMonth)->where('school_year', $schoolYear)->whereYear('due_date', $calendarYear)->whereIn('status', ['unpaid', 'overdue']))->count();
 
-        $firstStudentNumber = $students->firstItem() ?? 1;
+        // Terapkan filter SEBELUM paginate()
+        $search = trim((string) $request->query('search', ''));
+        $status = trim((string) $request->query('status', ''));
+        $grade = trim((string) $request->query('grade', ''));
 
-        $students->through(function ($student, $index) use ($selectedMonth, $schoolYear, $calendarYear, $firstStudentNumber) {
-            $monthlyBills = $student->bills
-                ->where('month', $selectedMonth)
-                ->where('school_year', $schoolYear)
-                ->filter(fn($bill): bool => $bill->due_date?->year === $calendarYear);
-            $unpaidBills = $monthlyBills->whereIn('status', ['unpaid', 'overdue']);
-            $hasOverdueBill = $unpaidBills->contains(function ($bill): bool {
-                return $bill->status === 'overdue'
-                    || ($bill->due_date?->isBefore(today()) ?? false);
+        $studentsQuery = (clone $baseQuery)
+            ->when($search !== '', function ($q) use ($search) {
+                $q->where(function ($sub) use ($search) {
+                    $sub->where('nisn', 'like', "{$search}%")
+                        ->orWhereHas('user', function ($u) use ($search) {
+                            $u->where('name', 'like', "{$search}%")
+                                ->orWhere('name', 'like', "% {$search}%");
+                        });
+                });
+            })
+            ->when(in_array($grade, ['10', '11', '12'], true), fn($q) => $q->where('class', 'like', "{$grade} %"))
+            ->when(in_array($status, ['paid', 'unpaid', 'overdue'], true), function ($q) use ($status, $selectedMonth, $calendarYear) {
+                $q->whereHas('bills', function ($bq) use ($status, $selectedMonth, $calendarYear) {
+                    $bq->where('month', $selectedMonth)->whereYear('due_date', $calendarYear);
+                    match ($status) {
+                        'paid' => $bq->where('status', 'paid'),
+                        'overdue' => $bq->where(fn($sub) => $sub->where('status', 'overdue')->orWhere(fn($s) => $s->where('status', 'unpaid')->whereDate('due_date', '<', today()))),
+                        'unpaid' => $bq->where('status', 'unpaid')->whereDate('due_date', '>=', today()),
+                    };
+                });
             });
 
-            $status = match (true) {
-                $monthlyBills->isEmpty() => 'Belum Ada Tagihan',
-                $hasOverdueBill => 'Terlambat',
-                $unpaidBills->isNotEmpty() => 'Belum Lunas',
-                default => 'Lunas',
-            };
+        $students = $studentsQuery->with(['user:id,name', 'bills'])->paginate(10)->withQueryString();
+        $firstNumber = $students->firstItem() ?? 1;
+
+        $students->through(function ($student, $index) use ($selectedMonth, $schoolYear, $calendarYear, $firstNumber) {
+            $bills = $student->bills->where('month', $selectedMonth)->where('school_year', $schoolYear)->filter(fn($b) => $b->due_date?->year === $calendarYear);
+            $unpaid = $bills->whereIn('status', ['unpaid', 'overdue']);
+            $isOverdue = $unpaid->contains(fn($b) => $b->status === 'overdue' || ($b->due_date?->isBefore(today()) ?? false));
 
             return [
-                'number' => $firstStudentNumber + $index,
+                'number' => $firstNumber + $index,
                 'id' => $student->id,
                 'name' => $student->user->name ?? '-',
                 'class' => $student->class,
-                'tuition' => $monthlyBills->isEmpty()
-                    ? '-'
-                    : 'Rp. ' . number_format($monthlyBills->sum('amount'), 0, ',', '.'),
-                'status' => $status,
+                'tuition' => $bills->isEmpty() ? '-' : 'Rp. ' . number_format($bills->sum('amount'), 0, ',', '.'),
+                'status' => match (true) {
+                    $bills->isEmpty() => 'Belum Ada Tagihan',
+                    $isOverdue => 'Terlambat',
+                    $unpaid->isNotEmpty() => 'Belum Lunas',
+                    default => 'Lunas',
+                },
             ];
         });
 
@@ -127,9 +108,46 @@ class AdminController extends Controller
     {
         $title = 'SPPku - Halaman Laporan Pembayaran Admin';
 
-        $payments = Transaction::with(['user.student'])
-            ->latest('transaction_date')
-            ->paginate(10);
+        $search = trim((string) $request->query('search', ''));
+        $class = trim((string) $request->query('class', ''));
+        $status = trim((string) $request->query('status', ''));
+        $month = trim((string) $request->query('month', ''));
+
+        $query = Transaction::with(['user.student'])
+            ->orderByRaw("CASE status WHEN 'pending' THEN 1 WHEN 'rejected' THEN 2 WHEN 'verified' THEN 3 ELSE 4 END")
+            ->latest('transaction_date');
+
+        // 1. Filter Pencarian Awal Nama (Depan/Belakang) atau Awal NISN
+        if ($search !== '') {
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where(function ($nameQuery) use ($search) {
+                    $nameQuery->where('name', 'like', "{$search}%")
+                        ->orWhere('name', 'like', "% {$search}%");
+                })->orWhereHas('student', function ($sq) use ($search) {
+                    $sq->where('nisn', 'like', "{$search}%");
+                });
+            });
+        }
+
+        // 2. Filter Kelas Siswa
+        if ($class !== '') {
+            $query->whereHas('user.student', function ($q) use ($class) {
+                $q->where('class', $class);
+            });
+        }
+
+        // 3. Filter Status Transaksi (verified / pending / rejected)
+        if (in_array($status, ['verified', 'pending', 'rejected'], true)) {
+            $query->where('status', $status);
+        }
+
+        // 4. Filter Bulan & Tahun (format: YYYY-MM, misal 2026-09)
+        if (preg_match('/^(\d{4})-(\d{2})$/', $month, $matches)) {
+            $query->whereYear('transaction_date', (int) $matches[1])
+                ->whereMonth('transaction_date', (int) $matches[2]);
+        }
+
+        $payments = $query->paginate(10)->withQueryString();
 
         $stats = [
             ['title' => 'Menunggu Verifikasi', 'count' => Transaction::where('status', 'pending')->count(), 'icon' => 'pending.png'],
@@ -186,14 +204,20 @@ class AdminController extends Controller
         return back()->with('success', $pesan);
     }
 
-    public function notification(): View
+    public function notification(Request $request): View
     {
-        $title = 'SPPku - Halaman Notifikasi Admin';
+        $title = 'SPPku - Notifikasi Pembayaran Siswa';
+        $status = trim((string) $request->query('status', ''));
 
-        $notifications = Transaction::with('user')
-            ->latest('transaction_date')
-            ->take(15)
-            ->get();
+        $query = Transaction::with(['user.student'])
+            ->orderByRaw("CASE status WHEN 'pending' THEN 1 WHEN 'rejected' THEN 2 WHEN 'verified' THEN 3 ELSE 4 END")
+            ->latest('transaction_date');
+
+        if (in_array($status, ['pending', 'verified', 'rejected'], true)) {
+            $query->where('status', $status);
+        }
+
+        $notifications = $query->paginate(10)->withQueryString();
 
         return view('admin.notification-view', compact('title', 'notifications'));
     }
@@ -213,7 +237,35 @@ class AdminController extends Controller
             'institution' => 'SMK Kristen Immanuel',
         ];
 
-        return view('admin.show', compact('title', 'admin'));
+        // Ambil catatan terbaru dari DB, dikelompokkan berdasarkan tanggal (terbaru di atas)
+        $groupedNotes = AdminNote::where('user_id', Auth::id())
+            ->latest()
+            ->get()
+            ->groupBy(fn($note) => $note->created_at->translatedFormat('j/M/Y'));
+
+        return view('admin.show', compact('title', 'admin', 'groupedNotes'));
+    }
+
+    public function storeNote(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'content' => 'required|string|max:500',
+        ]);
+
+        AdminNote::create([
+            'user_id' => Auth::id(),
+            'content' => trim($validated['content']),
+        ]);
+
+        return back()->with('success', 'Catatan pribadi berhasil ditambahkan.');
+    }
+
+    public function destroyNote(int $id): RedirectResponse
+    {
+        $note = AdminNote::where('user_id', Auth::id())->findOrFail($id);
+        $note->delete();
+
+        return back()->with('success', 'Catatan pribadi berhasil dihapus.');
     }
 
     public function reports(): View

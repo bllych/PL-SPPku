@@ -77,7 +77,8 @@
 
                         {{-- AKSI --}}
                         <td class="px-3 py-2.5 text-left font-semibold text-[18px] whitespace-nowrap">
-                            <a href="{{ route('students.show', ['id' => $student['id']]) }}" class="text-[#FFC857] hover:underline">
+                            <a href="{{ route('admin.payments', ['search' => $student['nisn'] ?? $student['name']]) }}"
+                                class="text-[#FFC857] hover:underline">
                                 Detail
                             </a>
                         </td>

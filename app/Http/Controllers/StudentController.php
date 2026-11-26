@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Student\StoreRequest;
 use App\Models\Student;
+use App\Models\Transaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -236,29 +237,68 @@ class StudentController extends Controller
         ));
     }
 
-    public function notifications($id)
+    public function notifications(Request $request, int $id): View
     {
         $title = 'SPPku - Notifikasi Siswa';
-        $student = Student::with('user')->findOrFail($id);
+        $student = Student::query()
+            ->with('user:id,name')
+            ->where('user_id', $request->user()->id)
+            ->findOrFail($id);
 
-        $notifications = [
-            [
-                'icon' => 'success',
-                'type' => 'Pembayaran Berhasil',
-                'title' => 'Pembayaran SPP Terverifikasi',
-                'message' => 'Pembayaran SPP bulan November 2026 sebesar Rp 840.000 telah diverifikasi oleh admin.',
-                'time' => 'Hari ini, 09:30 WIB',
-                'read' => false,
-            ],
-            [
-                'icon' => 'warning',
-                'type' => 'Pengingat Tagihan',
-                'title' => 'Tagihan SPP Bulan Desember',
-                'message' => 'Tagihan SPP bulan Desember 2026 jatuh tempo pada tanggal 15 Desember 2026.',
-                'time' => '2 hari yang lalu',
-                'read' => true,
-            ],
+        $monthNames = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
         ];
+
+        $transactions = Transaction::with('bill')
+            ->where('user_id', $student->user_id)
+            ->latest('updated_at')
+            ->get();
+
+        $notifications = $transactions->map(function (Transaction $tx) use ($monthNames): array {
+            $bulanLabel = $tx->bill
+                ? ($monthNames[$tx->bill->month].' '.$tx->bill->due_date->format('Y'))
+                : $tx->transaction_date->translatedFormat('F Y');
+            $nominalLabel = 'Rp '.number_format((float) $tx->amount, 0, ',', '.');
+            $catatan = $tx->note ? ' Catatan admin: '.$tx->note : '';
+
+            return match ($tx->status) {
+                'verified' => [
+                    'icon'    => 'approved',
+                    'type'    => 'Pembayaran Diterima',
+                    'title'   => 'Pembayaran SPP Terverifikasi',
+                    'message' => "Pembayaran SPP bulan {$bulanLabel} sebesar {$nominalLabel} ({$tx->payment_method}) telah disetujui oleh admin.{$catatan}",
+                    'time'    => ($tx->verified_at ?? $tx->updated_at)->diffForHumans(),
+                    'read'    => ($tx->verified_at ?? $tx->updated_at)->lt(now()->subDay()),
+                ],
+                'rejected' => [
+                    'icon'    => 'overdue',
+                    'type'    => 'Pembayaran Ditolak',
+                    'title'   => 'Pembayaran SPP Ditolak',
+                    'message' => "Pembayaran SPP bulan {$bulanLabel} sebesar {$nominalLabel} ditolak oleh admin.{$catatan}",
+                    'time'    => $tx->updated_at->diffForHumans(),
+                    'read'    => false,
+                ],
+                default => [
+                    'icon'    => 'pending',
+                    'type'    => 'Menunggu Verifikasi',
+                    'title'   => 'Pembayaran Sedang Diverifikasi',
+                    'message' => "Pengajuan pembayaran SPP bulan {$bulanLabel} sebesar {$nominalLabel} ({$tx->payment_method}) sedang menunggu verifikasi admin.",
+                    'time'    => $tx->transaction_date->diffForHumans(),
+                    'read'    => true,
+                ],
+            };
+        })->all();
 
         return view('student.notification-view', compact('title', 'student', 'notifications'));
     }
