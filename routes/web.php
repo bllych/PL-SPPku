@@ -27,13 +27,20 @@ Route::middleware('auth')->group(function (): void {
             ->name('students.store');
         Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
             ->name('admin.dashboard');
-        Route::get('/admin/profile', [AdminController::class, 'show']);
+        Route::get('/admin/profile', [AdminController::class, 'show'])
+            ->name('admin.profile');
+        Route::post('/admin/profile/notes', [AdminController::class, 'storeNote'])
+            ->name('admin.notes.store');
+        Route::delete('/admin/profile/notes/{id}', [AdminController::class, 'destroyNote'])
+            ->name('admin.notes.destroy');
         Route::get('/admin/payments', [AdminController::class, 'payments'])
             ->name('admin.payments');
         Route::patch('/admin/payments/{id}/verify', [AdminController::class, 'verifyPayment'])
             ->name('admin.payments.verify');
-        Route::get('/admin/notification', [AdminController::class, 'notification']);
-        Route::get('/admin/reports', [AdminController::class, 'reports']);
+        Route::get('/admin/notification', [AdminController::class, 'notification'])
+            ->name('admin.notification');
+        Route::get('/admin/reports', [AdminController::class, 'reports'])
+            ->name('admin.reports');
     });
 
     Route::post('/logout', [AuthController::class, 'logout'])

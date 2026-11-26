@@ -55,7 +55,7 @@
                         <x-admin.status-badge :status="$statusLabel" />
                     </td>
                     <td class="py-2.5 px-4 text-center whitespace-nowrap">
-                        @if ($statusLabel === 'Menunggu' || $statusLabel === 'Ditolak')
+                        @if ($statusLabel === 'Menunggu')
                             <a href="{{ request()->fullUrlWithQuery(['selected' => $item->id]) }}"
                                 class="inline-block py-2 text-xs font-medium text-white bg-[#45C0F4] hover:bg-sky-500 rounded-lg shadow-sm transition-colors w-19">
                                 Verifikasi
