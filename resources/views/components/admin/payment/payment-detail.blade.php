@@ -1,79 +1,101 @@
-<div class="lg:col-span-1 bg-white p-3 rounded-lg border-2 border-[#000000]/15 flex flex-col gap-2.5 text-[10px]">
+@props(['payment' => null])
 
-    <!-- Title & Badge Status -->
-    <div class="flex flex-col gap-1">
-        <h3 class="text-sm font-bold text-[#45C0F4] pt-1">Detail Pembayaran</h3>
+<div class="bg-white rounded-xl border border-[#000000]/15 shadow-sm p-4 flex flex-col gap-3">
+    <h3 class="font-bold text-base text-[#45C0F4]">Detail Pembayaran</h3>
+
+    @if ($payment)
+        @php
+            $statusLabel = match ($payment->status) {
+                'verified' => 'Terverifikasi',
+                'rejected' => 'Ditolak',
+                default => 'Menunggu Verifikasi',
+            };
+
+            $badgeClass = match ($payment->status) {
+                'verified' => 'bg-green-50 text-green-600 border-green-400',
+                'rejected' => 'bg-red-50 text-red-600 border-red-400',
+                default => 'bg-amber-50 text-amber-600 border-amber-400',
+            };
+        @endphp
+
         <div>
-            <span
-                class="inline-block px-2 py-0.5 text-[10px] font-medium text-[#D4B237] bg-[#FFF7DC] border border-[#D4B237] rounded-md">
-                Menunggu Verifikasi
+            <span class="inline-block rounded-md border px-2.5 py-1 text-[11px] font-semibold {{ $badgeClass }}">
+                {{ $statusLabel }}
             </span>
         </div>
-    </div>
 
-    <!-- Informasi Transaksi -->
-    <div class="flex flex-col gap-1 py-0.5 text-[#4E4E4E]">
-        <div class="flex justify-between items-center">
-            <span class="text-gray-400 font-medium">Nama Siswa</span>
-            <span class="font-semibold text-right">Alfredy Rudy</span>
-        </div>
-        <div class="flex justify-between items-center">
-            <span class="text-gray-400 font-medium">NISN</span>
-            <span class="font-semibold text-right">00987654321</span>
-        </div>
-        <div class="flex justify-between items-center">
-            <span class="text-gray-400 font-medium">Kelas</span>
-            <span class="font-semibold text-right">XII TKJ 1</span>
-        </div>
-        <div class="flex justify-between items-center">
-            <span class="text-gray-400 font-medium">Bulan</span>
-            <span class="font-semibold text-right">September 2026</span>
-        </div>
-        <div class="flex justify-between items-center">
-            <span class="text-gray-400 font-medium">Nominal</span>
-            <span class="font-semibold text-right">Rp840.000,00</span>
-        </div>
-        <div class="flex justify-between items-center">
-            <span class="text-gray-400 font-medium">Tanggal Bayar</span>
-            <span class="font-semibold text-right">01 September 2026, 10:15</span>
-        </div>
-    </div>
-
-    <!-- Bukti Pembayaran -->
-    <div class="flex flex-col gap-1">
-        <span class="font-semibold text-[#45C0F4] text-[10px]">Bukti Pembayaran</span>
-        <div class="relative group rounded-md overflow-hidden border border-gray-200">
-            <img src="{{ asset('images/receipt.png') }}" alt="Bukti Pembayaran" class="w-full h-24 object-cover">
-        </div>
-    </div>
-
-    <!-- Form / Input Catatan -->
-    <form action="#" method="POST" class="flex flex-col gap-2">
-        @csrf
-
-        <div class="flex flex-col gap-0.5">
-            <label class="text-gray-400 font-medium">Catatan <span class="text-gray-300">(opsional)</span></label>
-            <textarea rows="2" placeholder="Tulis catatan atau keterangan..."
-                class="w-full p-1.5 bg-white border border-gray-300 rounded-md outline-none focus:border-[#45C0F4] text-[10px] resize-none placeholder:text-gray-300"></textarea>
+        <div class="space-y-1.5 text-xs border-b border-gray-100 pb-3">
+            <div class="flex justify-between gap-2">
+                <span class="text-gray-400">Nama Siswa</span>
+                <span class="font-semibold text-[#4E4E4E] text-right">{{ $payment->user->name ?? '-' }}</span>
+            </div>
+            <div class="flex justify-between gap-2">
+                <span class="text-gray-400">NISN</span>
+                <span class="font-semibold text-[#4E4E4E] text-right">{{ $payment->user->student->nisn ?? '-' }}</span>
+            </div>
+            <div class="flex justify-between gap-2">
+                <span class="text-gray-400">Kelas</span>
+                <span class="font-semibold text-[#4E4E4E] text-right">{{ $payment->user->student->class ?? '-' }}</span>
+            </div>
+            <div class="flex justify-between gap-2">
+                <span class="text-gray-400">Metode</span>
+                <span class="font-semibold text-[#4E4E4E] text-right">{{ $payment->payment_method }}</span>
+            </div>
+            <div class="flex justify-between gap-2">
+                <span class="text-gray-400">Nominal</span>
+                <span class="font-bold text-[#4E4E4E] text-right">
+                    Rp. {{ number_format($payment->amount, 2, ',', '.') }}
+                </span>
+            </div>
+            <div class="flex justify-between gap-2">
+                <span class="text-gray-400">Tanggal Bayar</span>
+                <span class="font-semibold text-[#4E4E4E] text-right">
+                    {{ $payment->transaction_date->translatedFormat('d F Y, H:i') }}
+                </span>
+            </div>
         </div>
 
-        <!-- Tombol Aksi -->
-        <div class="grid grid-cols-2 gap-1.5 pt-0.5">
-            <a href="#"
-                class="w-full py-1.5 px-1 bg-[#61BD53] hover:bg-green-600 text-white font-medium rounded-md text-[10px] transition-colors text-center inline-block">
-                Terima Pembayaran
-            </a>
-            <a href="#"
-                class="w-full py-1.5 px-1 bg-[#D9534F] hover:bg-red-600 text-white font-medium rounded-md text-[10px] transition-colors text-center inline-block">
-                Tolak Pembayaran
-            </a>
+        <div class="space-y-1.5">
+            <p class="text-xs font-semibold text-[#45C0F4]">Bukti Pembayaran</p>
+            @if ($payment->proof_image)
+                <img src="{{ asset('images/receipt.png') }}" alt="Bukti Pembayaran"
+                    class="w-full h-36 object-cover rounded-lg border border-gray-200">
+            @else
+                <div
+                    class="w-full h-32 rounded-lg border border-dashed border-gray-200 bg-slate-50 flex items-center justify-center text-[11px] text-gray-400">
+                    Tidak ada bukti transfer
+                </div>
+            @endif
         </div>
 
-        <div class="flex flex-col gap-0.5 pt-0.5">
-            <label class="text-gray-500 font-semibold">Alasan penolakan <label class="text-[#FF0707]">*</label></label>
-            <textarea rows="2" placeholder="Tulis keterangan..."
-                class="w-full p-1.5 bg-white border border-gray-300 rounded-md outline-none focus:border-[#45C0F4] text-[10px] resize-none placeholder:text-gray-300"></textarea>
-        </div>
-    </form>
+        <form action="{{ route('admin.payments.verify', $payment->id) }}" method="POST" class="flex flex-col gap-2.5 pt-1"
+            onsubmit="return confirm('Apakah Anda yakin ingin menyimpan keputusan verifikasi pembayaran ini?')">
+            @csrf
+            @method('PATCH')
 
+            <div>
+                <label class="block text-[11px] font-medium text-gray-500 mb-1">
+                    Catatan / Alasan Penolakan (wajib jika ditolak)
+                </label>
+                <textarea id="adminNote" name="note" rows="2" placeholder="Tulis catatan atau alasan penolakan..."
+                    class="w-full rounded-lg border border-gray-200 p-2 text-xs text-[#4E4E4E] focus:border-[#45C0F4] focus:outline-none">{{ old('note', $payment->note) }}</textarea>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+                <button type="submit" name="status" value="verified"
+                    class="w-full rounded-lg bg-[#28A745] hover:bg-green-600 py-2 text-xs font-semibold text-white transition-colors cursor-pointer">
+                    Terima Pembayaran
+                </button>
+                <button type="submit" name="status" value="rejected"
+                    onclick="if(!document.getElementById('adminNote').value.trim()){ alert('Harap isi alasan penolakan pada kolom catatan terlebih dahulu!'); return false; }"
+                    class="w-full rounded-lg bg-[#DC3545] hover:bg-red-600 py-2 text-xs font-semibold text-white transition-colors cursor-pointer">
+                    Tolak Pembayaran
+                </button>
+            </div>
+        </form>
+    @else
+        <p class="py-8 text-center text-xs text-gray-400">
+            Pilih salah satu transaksi untuk melihat detail.
+        </p>
+    @endif
 </div>

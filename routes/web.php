@@ -28,7 +28,10 @@ Route::middleware('auth')->group(function (): void {
         Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
             ->name('admin.dashboard');
         Route::get('/admin/profile', [AdminController::class, 'show']);
-        Route::get('/admin/payments', [AdminController::class, 'payments']);
+        Route::get('/admin/payments', [AdminController::class, 'payments'])
+            ->name('admin.payments');
+        Route::patch('/admin/payments/{id}/verify', [AdminController::class, 'verifyPayment'])
+            ->name('admin.payments.verify');
         Route::get('/admin/notification', [AdminController::class, 'notification']);
         Route::get('/admin/reports', [AdminController::class, 'reports']);
     });
