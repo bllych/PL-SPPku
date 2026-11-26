@@ -127,9 +127,38 @@ class AdminController extends Controller
     {
         $title = 'SPPku - Halaman Laporan Pembayaran Admin';
 
-        $payments = Transaction::with(['user.student'])
-            ->latest('transaction_date')
-            ->paginate(10);
+        $search = trim((string) $request->query('search', ''));
+        $class = trim((string) $request->query('class', ''));
+        $status = trim((string) $request->query('status', ''));
+        $month = trim((string) $request->query('month', ''));
+
+        $query = Transaction::with(['user.student'])->latest('transaction_date');
+
+        if ($search !== '') {
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhereHas('student', function ($sq) use ($search) {
+                        $sq->where('nisn', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($class !== '') {
+            $query->whereHas('user.student', function ($q) use ($class) {
+                $q->where('class', $class);
+            });
+        }
+
+        if (in_array($status, ['verified', 'pending', 'rejected'], true)) {
+            $query->where('status', $status);
+        }
+
+        if (preg_match('/^(\d{4})-(\d{2})$/', $month, $matches)) {
+            $query->whereYear('transaction_date', (int) $matches[1])
+                ->whereMonth('transaction_date', (int) $matches[2]);
+        }
+
+        $payments = $query->paginate(10)->withQueryString();
 
         $stats = [
             ['title' => 'Menunggu Verifikasi', 'count' => Transaction::where('status', 'pending')->count(), 'icon' => 'pending.png'],
