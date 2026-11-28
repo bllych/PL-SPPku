@@ -88,9 +88,7 @@ class DatabaseSeeder extends Seeder
         $seededTransactionNotes = [
             'Pembayaran terverifikasi',
             'Menunggu verifikasi admin',
-            'Seeder demo: pembayaran terverifikasi',
-            'Seeder demo: menunggu verifikasi',
-            'Seeder demo: transaksi ditolak',
+            'Transaksi ditolak',
         ];
 
         foreach ($studentsData as $index => $studentName) {
@@ -173,9 +171,9 @@ class DatabaseSeeder extends Seeder
                             ? $transactionDate->copy()->addHours(($index % 2) + 1)
                             : null,
                         'note' => match ($transactionStatus) {
-                            'verified' => 'Seeder demo: pembayaran terverifikasi',
-                            'pending' => 'Seeder demo: menunggu verifikasi',
-                            'rejected' => 'Seeder demo: transaksi ditolak',
+                            'verified' => 'Pembayaran terverifikasi',
+                            'pending' => 'Menunggu verifikasi admin',
+                            'rejected' => 'Transaksi ditolak',
                         },
                     ]
                 );

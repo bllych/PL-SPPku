@@ -66,7 +66,7 @@
         <div class="space-y-1.5">
             <p class="text-xs font-semibold text-[#45C0F4]">Bukti Pembayaran</p>
             @if ($payment->proof_image)
-                <img src="{{ asset('images/receipt.png') }}" alt="Bukti Pembayaran"
+                <img src="{{ asset('storage/' . $payment->proof_image) }}" alt="Bukti Pembayaran"
                     class="w-full h-36 object-cover rounded-lg border border-gray-200">
             @else
                 <div
