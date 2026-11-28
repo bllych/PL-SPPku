@@ -1,4 +1,4 @@
-@props(['payment' => null])
+@props(['payment' => null, 'receiptImage' => null])
 
 <div class="bg-white rounded-xl border border-[#000000]/15 shadow-sm p-4 flex flex-col gap-3">
     <h3 class="font-bold text-base text-[#45C0F4]">Detail Pembayaran</h3>
@@ -65,7 +65,10 @@
 
         <div class="space-y-1.5">
             <p class="text-xs font-semibold text-[#45C0F4]">Bukti Pembayaran</p>
-            @if ($payment->proof_image)
+            @if ($receiptImage)
+                <img src="{{ asset($receiptImage) }}" alt="Bukti Pembayaran {{ $statusLabel }}"
+                    class="w-full h-36 object-cover rounded-lg border border-gray-200">
+            @elseif ($payment->proof_image)
                 <img src="{{ asset('storage/' . $payment->proof_image) }}" alt="Bukti Pembayaran"
                     class="w-full h-36 object-cover rounded-lg border border-gray-200">
             @else

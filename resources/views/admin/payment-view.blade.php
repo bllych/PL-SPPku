@@ -51,7 +51,10 @@
             </div>
 
             {{-- PART 3: Detail Pembayaran --}}
-            <x-admin.payment.payment-detail :payment="$selectedPayment" />
+            <x-admin.payment.payment-detail
+                :payment="$selectedPayment"
+                :receipt-image="$selectedPaymentReceiptImage"
+            />
         </div>
     </div>
 @endsection

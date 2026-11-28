@@ -391,13 +391,17 @@ class AdminController extends Controller
     public function payments(Request $request): View
     {
         $title = 'SPPku - Halaman Laporan Pembayaran Admin';
+        $paymentRelations = [
+            'user.student',
+            'bill:id,due_date',
+        ];
 
         $search = trim((string) $request->query('search', ''));
         $class = trim((string) $request->query('class', ''));
         $status = trim((string) $request->query('status', ''));
         $month = trim((string) $request->query('month', ''));
 
-        $query = Transaction::with(['user.student'])
+        $query = Transaction::with($paymentRelations)
             ->orderByRaw("CASE status WHEN 'pending' THEN 1 WHEN 'rejected' THEN 2 WHEN 'verified' THEN 3 ELSE 4 END")
             ->latest('transaction_date');
 
@@ -442,10 +446,39 @@ class AdminController extends Controller
 
         $selectedId = $request->query('selected');
         $selectedPayment = $selectedId
-            ? Transaction::with(['user.student'])->find($selectedId)
+            ? Transaction::with($paymentRelations)->find($selectedId)
             : $payments->first();
 
-        return view('admin.payment-view', compact('title', 'payments', 'stats', 'selectedPayment'));
+        $selectedPaymentReceiptImage = $selectedPayment
+            ? $this->paymentReceiptImage($selectedPayment)
+            : null;
+
+        return view('admin.payment-view', compact(
+            'title',
+            'payments',
+            'stats',
+            'selectedPayment',
+            'selectedPaymentReceiptImage',
+        ));
+    }
+
+    private function paymentReceiptImage(Transaction $payment): ?string
+    {
+        if ($payment->status === 'rejected') {
+            return 'images/receiptInvalid.jpeg';
+        }
+
+        $dueDate = $payment->bill?->due_date;
+
+        if ($dueDate !== null && $payment->transaction_date->toDateString() > $dueDate->toDateString()) {
+            return 'images/receiptTelat.jpeg';
+        }
+
+        if ($payment->status === 'verified') {
+            return 'images/receipt.png';
+        }
+
+        return null;
     }
 
     public function verifyPayment(Request $request, $id): RedirectResponse
