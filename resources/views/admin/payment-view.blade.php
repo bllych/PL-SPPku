@@ -5,18 +5,18 @@
 @section('content')
     <div class="flex flex-col gap-4">
 
-        <div class="flex flex-row justify-between">
+        <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
                 <p class="font-bold text-[#45C0F4] text-lg">CEK PEMBAYARAN</p>
                 <p class="font-medium text-[#999999] text-sm">Verifikasi pembayaran SPP siswa</p>
             </div>
-            <div class="flex items-center gap-4">
+            <div class="flex flex-wrap items-center gap-3 sm:gap-4">
 
                 <x-admin.month-dropdown />
 
                 <div>
-                    <a href="#"
-                        class="bg-white py-2 px-4 rounded-lg border-2 border-[#000000]/15 text-[#45C0F4] text-md font-semibold flex flex-row gap-2 items-center">
+                    <a href="{{ route('admin.payments.export', request()->query()) }}"
+                        class="bg-white py-2 px-4 rounded-lg border-2 border-[#000000]/15 text-[#45C0F4] text-md font-semibold flex flex-row gap-2 items-center transition hover:border-[#45C0F4] hover:bg-sky-50">
 
                         <img src="{{ asset('images/icons/download.png') }}" alt="icon-list" class="w-auto h-6">
 

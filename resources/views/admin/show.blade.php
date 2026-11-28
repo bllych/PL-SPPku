@@ -37,7 +37,7 @@
                 class="mb-4 flex items-center justify-between rounded-xl border border-green-400 bg-green-50 px-4 py-3 text-sm font-semibold text-green-700 shadow-sm">
                 <span>{{ session('success') }}</span>
                 <button type="button" onclick="document.getElementById('alertSuccess').remove()"
-                    class="font-bold text-green-700 hover:text-green-900">&times;</button>
+                    class="cursor-pointer font-bold text-green-700 hover:text-green-900">&times;</button>
             </div>
         @endif
 
@@ -59,16 +59,43 @@
                             Welcome Back, {{ $admin['name'] }}!
                         </h2>
 
-                        <div class="flex flex-wrap items-center gap-2">
+                        {{-- Mode Tampil Bio / Motto --}}
+                        <div id="bioViewBox" class="{{ $errors->has('bio') ? 'hidden' : 'flex' }} flex-wrap items-center gap-2">
                             <p class="text-base font-semibold text-[#4E4E4E]">
-                                Do your best! Tuhan menyertai
+                                {{ $admin['bio'] }}
                             </p>
 
-                            <a href="#" title="Edit profil">
-                                <img src="{{ asset('images/icons/edit profile student.png') }}" alt="Edit profil"
+                            <button type="button" id="editBioBtn" title="Edit bio"
+                                class="cursor-pointer rounded p-1 transition hover:bg-sky-50">
+                                <img src="{{ asset('images/icons/edit profile student.png') }}" alt="Edit bio"
                                     class="h-4 w-4 object-contain">
-                            </a>
+                            </button>
                         </div>
+
+                        {{-- Mode Edit Bio / Motto --}}
+                        <form id="bioEditForm" action="{{ route('admin.profile.bio') }}" method="POST"
+                            class="{{ $errors->has('bio') ? 'flex' : 'hidden' }} mt-1.5 flex-wrap items-center gap-2">
+                            @csrf
+                            @method('PATCH')
+                            <input type="text" id="bioInput" name="bio" maxlength="150" required
+                                value="{{ old('bio', $admin['bio']) }}"
+                                class="w-full max-w-[320px] rounded-md border border-[#45C0F4] bg-[#F3F5FF]/50 px-2.5 py-1 text-sm font-semibold text-[#4E4E4E] outline-none">
+
+                            <div class="flex items-center gap-1.5">
+                                <button type="submit"
+                                    class="cursor-pointer rounded-md bg-[#45C0F4] px-3 py-1 text-xs font-bold text-white hover:bg-sky-500">
+                                    Simpan
+                                </button>
+                                <button type="button" id="cancelBioBtn"
+                                    class="cursor-pointer rounded-md border border-gray-300 bg-white px-2.5 py-1 text-xs font-semibold text-[#999999] hover:bg-gray-50">
+                                    Batal
+                                </button>
+                            </div>
+
+                            @error('bio')
+                                <p class="w-full text-xs text-red-500">{{ $message }}</p>
+                            @enderror
+                        </form>
                     </div>
 
                 </div>
@@ -150,7 +177,7 @@
                 {{-- Daftar Catatan --}}
                 <div class="rounded-md bg-white px-5 py-3 shadow-md">
 
-                    {{-- 1. Catatan dari Database (Bisa dihapus permanen dari DB) --}}
+                    {{-- 1. Catatan dari Database --}}
                     @foreach ($groupedNotes as $date => $items)
                         <div class="mb-4 last:mb-0">
                             <p class="mb-3 text-base font-medium text-[#4E4E4E]">
@@ -159,7 +186,7 @@
 
                             <div class="flex flex-col gap-3">
                                 @foreach ($items as $note)
-                                    <div class="group flex items-start justify-between gap-2">
+                                    <div class="flex items-start justify-between gap-2">
                                         <p class="text-base font-medium leading-relaxed text-[#999999]">
                                             {{ $note->content }}
                                         </p>
@@ -231,6 +258,32 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
+            // Toggle Edit Bio / Motto
+            const editBioBtn = document.getElementById('editBioBtn');
+            const cancelBioBtn = document.getElementById('cancelBioBtn');
+            const bioViewBox = document.getElementById('bioViewBox');
+            const bioEditForm = document.getElementById('bioEditForm');
+            const bioInput = document.getElementById('bioInput');
+
+            if (editBioBtn && bioEditForm) {
+                editBioBtn.addEventListener('click', function () {
+                    bioViewBox.classList.add('hidden');
+                    bioViewBox.classList.remove('flex');
+                    bioEditForm.classList.remove('hidden');
+                    bioEditForm.classList.add('flex');
+                    bioInput.focus();
+                    bioInput.select();
+                });
+
+                cancelBioBtn.addEventListener('click', function () {
+                    bioEditForm.classList.add('hidden');
+                    bioEditForm.classList.remove('flex');
+                    bioViewBox.classList.remove('hidden');
+                    bioViewBox.classList.add('flex');
+                });
+            }
+
+            // Toggle Form Tambah Catatan Pribadi
             const openBtn = document.getElementById('openNoteBtn');
             const cancelBtn = document.getElementById('cancelNoteBtn');
             const noteForm = document.getElementById('noteForm');
